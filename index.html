@@ -2,329 +2,511 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Checklist Event</title>
+    <title>Checklist – Événement Drink & Jeux</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
-        body {
-            background: #111;
-            color: #eee;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        .accordion-header {
-            cursor: pointer;
-            padding: 10px;
-            background: #222;
-            border: 1px solid #333;
-            margin-top: 5px;
-        }
-        .accordion-content {
-            display: none;
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-        }
-        .accordion-content.open {
-            display: block;
-        }
-        .dark-mode-extra {
-            background: #000;
-            color: #fff;
-        }
-        .compact input[type=text] {
-            height: 22px;
-        }
-        .addTaskBtn {
-            margin-top: 8px;
-            padding: 4px 8px;
-            font-size: 0.9em;
-        }
+        /* ====== RESET ====== */
+body, h1, h2, h3, p, div, input, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== GLOBAL ====== */
+body {
+    background: #1e1e1e;
+    color: white;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+header {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.top-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    background: #333;
+    color: white;
+    border: 1px solid #555;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background: #444;
+}
+
+/* ====== ACCORDÉONS ====== */
+.accordion {
+    background: #2a2a2a;
+    border: 1px solid #444;
+    margin-bottom: 15px;
+    border-radius: 6px;
+}
+
+.accordion-header {
+    padding: 12px;
+    font-size: 20px;
+    background: #333;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+}
+
+.accordion-content {
+    padding: 15px;
+    display: block; /* ouvert par défaut */
+}
+
+/* ====== SOUS-SECTIONS ====== */
+.subsection {
+    background: #252525;
+    border: 1px solid #444;
+    margin: 10px 0;
+    border-radius: 6px;
+}
+
+.subsection-header {
+    padding: 10px;
+    font-size: 18px;
+    background: #303030;
+    cursor: pointer;
+    border-radius: 6px 6px 0 0;
+}
+
+.subsection-content {
+    padding: 10px;
+    display: block; /* ouvert par défaut */
+}
+
+/* ====== LIGNES ====== */
+.line {
+    display: flex;
+    flex-direction: column;
+    background: #1c1c1c;
+    border: 1px solid #444;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+.line-title, .line-note {
+    width: 100%;
+    padding: 6px;
+    margin-bottom: 6px;
+    background: #2a2a2a;
+    border: 1px solid #555;
+    color: white;
+    border-radius: 4px;
+}
+
+.delete-line {
+    background: #7a1f1f;
+    border: 1px solid #aa2a2a;
+}
+
+.delete-line:hover {
+    background: #992222;
+}
+
+/* ====== AJOUT DE LIGNE ====== */
+.add-line {
+    margin-top: 10px;
+    background: #1f7a39;
+    border: 1px solid #2aaa55;
+}
+
+.add-line:hover {
+    background: #22a94a;
+}
+
+/* ====== PANNEAU DE SYNCHRO ====== */
+#syncPanel {
+    width: 260px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    padding: 15px;
+    border-radius: 6px;
+    height: fit-content;
+}
+
+#syncPanel input {
+    width: 100%;
+    padding: 6px;
+    margin: 6px 0;
+    background: #1c1c1c;
+    border: 1px solid #555;
+    color: white;
+    border-radius: 4px;
+}
+
+#syncStatus {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #8fd18f;
+}
+
     </style>
 </head>
 
 <body>
 
-    <h1>Checklist Event</h1>
+    <header>
+        <h1>Checklist – Événement Drink & Jeux</h1>
+        <div class="top-buttons">
+            <button id="pdfBtn">PDF</button>
+            <button id="resetBtn">Réinitialiser</button>
+            <button id="darkModeBtn">Mode sombre</button>
+        </div>
+    </header>
 
-    <!-- SECTION 1 -->
-    <div class="accordion-header">Section 1</div>
-    <div class="accordion-content">
-        <div>
-            <input type="checkbox" id="cb1">
-            <label for="cb1">Tâche 1</label><br>
-            <input type="text" id="txt1" placeholder="Note…"><br>
+    <main>
+
+        <!-- ========================= -->
+        <!-- SECTION 1 : LAN MATINAL -->
+        <!-- ========================= -->
+        <div class="accordion open">
+            <div class="accordion-header">1) Événement matinal – LAN</div>
+            <div class="accordion-content open">
+
+                <!-- A. Matériel -->
+                <div class="subsection open">
+                    <div class="subsection-header">A. Matériel</div>
+                    <div class="subsection-content open" id="sec1A">
+
+                        <!-- Exemple de ligne -->
+                        <div class="line">
+                            <input class="line-title" value="Nombre de Nintendo Switch disponibles">
+                            <input class="line-note" placeholder="Ex : 3 consoles">
+                            <button class="delete-line">🗑</button>
+                        </div>
+
+                        <div class="line">
+                            <input class="line-title" value="Jeux disponibles (Mario Kart, Smash, etc)">
+                            <input class="line-note" placeholder="Liste des jeux">
+                            <button class="delete-line">🗑</button>
+                        </div>
+
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <!-- B. Logistique -->
+                <div class="subsection open">
+                    <div class="subsection-header">B. Logistique</div>
+                    <div class="subsection-content open" id="sec1B">
+
+                        <div class="line">
+                            <input class="line-title" value="Local attribué pour la LAN">
+                            <input class="line-note" placeholder="Nom / numéro du local">
+                            <button class="delete-line">🗑</button>
+                        </div>
+
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <button class="addTaskBtn">+ Ajouter une tâche</button>
-    </div>
+        <!-- ========================= -->
+        <!-- SECTION 2 : DRINK & JEUX -->
+        <!-- ========================= -->
+        <div class="accordion open">
+            <div class="accordion-header">2) Événement après-midi – Parking / Drink</div>
+            <div class="accordion-content open">
 
-    <!-- SECTION 2 -->
-    <div class="accordion-header">Section 2</div>
-    <div class="accordion-content">
-        <div>
-            <input type="checkbox" id="cb2">
-            <label for="cb2">Tâche 2</label><br>
-            <input type="text" id="txt2" placeholder="Note…"><br>
+                <!-- A. Matériel -->
+                <div class="subsection open">
+                    <div class="subsection-header">A. Matériel</div>
+                    <div class="subsection-content open" id="sec2A">
+
+                        <div class="line">
+                            <input class="line-title" value="Matériel pour le bar (table, nappes, gobelets)">
+                            <input class="line-note" placeholder="Détails du bar">
+                            <button class="delete-line">🗑</button>
+                        </div>
+
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <!-- B. Logistique -->
+                <div class="subsection open">
+                    <div class="subsection-header">B. Logistique</div>
+                    <div class="subsection-content open" id="sec2B">
+
+                        <div class="line">
+                            <input class="line-title" value="Organisation du bar">
+                            <input class="line-note" placeholder="Qui fait quoi ?">
+                            <button class="delete-line">🗑</button>
+                        </div>
+
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <button class="addTaskBtn">+ Ajouter une tâche</button>
-    </div>
+        <!-- ========================= -->
+        <!-- SECTION 3 : ASPECTS TECHNIQUES -->
+        <!-- ========================= -->
 
-    <!-- BLOC SYNCHRONISATION -->
-    <div style="padding: 10px; border-top: 1px solid #444; margin-top: 20px;">
+        <!-- LAN -->
+        <div class="accordion open">
+            <div class="accordion-header">3) Aspects techniques – LAN</div>
+            <div class="accordion-content open">
+
+                <div class="subsection open">
+                    <div class="subsection-header">A. Matériel</div>
+                    <div class="subsection-content open" id="sec3LAN_A">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <div class="subsection open">
+                    <div class="subsection-header">B. Logistique</div>
+                    <div class="subsection-content open" id="sec3LAN_B">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <div class="subsection open">
+                    <div class="subsection-header">C. Éléments souvent oubliés</div>
+                    <div class="subsection-content open" id="sec3LAN_C">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PARKING -->
+        <div class="accordion open">
+            <div class="accordion-header">3) Aspects techniques – Parking</div>
+            <div class="accordion-content open">
+
+                <div class="subsection open">
+                    <div class="subsection-header">A. Matériel</div>
+                    <div class="subsection-content open" id="sec3PARK_A">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <div class="subsection open">
+                    <div class="subsection-header">B. Logistique</div>
+                    <div class="subsection-content open" id="sec3PARK_B">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <div class="subsection open">
+                    <div class="subsection-header">C. Éléments souvent oubliés</div>
+                    <div class="subsection-content open" id="sec3PARK_C">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- GENERAL -->
+        <div class="accordion open">
+            <div class="accordion-header">3) Aspects techniques – Général</div>
+            <div class="accordion-content open">
+
+                <div class="subsection open">
+                    <div class="subsection-header">A. Matériel</div>
+                    <div class="subsection-content open" id="sec3GEN_A">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <div class="subsection open">
+                    <div class="subsection-header">B. Logistique</div>
+                    <div class="subsection-content open" id="sec3GEN_B">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+                <div class="subsection open">
+                    <div class="subsection-header">C. Éléments souvent oubliés</div>
+                    <div class="subsection-content open" id="sec3GEN_C">
+                        <button class="add-line">+ Ajouter une ligne</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- PANNEAU DE SYNCHRONISATION -->
+    <aside id="syncPanel">
         <h3>Synchronisation</h3>
-
-        <label for="githubToken">Token GitHub :</label>
-        <input type="password" id="githubToken" placeholder="Collez votre token ici" style="width:100%; margin-bottom:10px;">
-
+        <label>Token GitHub :</label>
+        <input type="password" id="githubToken">
         <button id="saveTokenBtn">Enregistrer le token</button>
         <button id="syncNowBtn">Synchroniser maintenant</button>
+        <p id="syncStatus"></p>
+    </aside>
 
-        <p id="syncStatus" style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;"></p>
-    </div>
-
-    <!-- SCRIPT GLOBAL -->
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
+        /* ============================
+   AJOUT / SUPPRESSION DE LIGNES
+============================ */
 
-        /* ---------------------------------------------------
-           SAUVEGARDE LOCALE
-        --------------------------------------------------- */
+function createLine() {
+    const div = document.createElement("div");
+    div.className = "line";
 
-        const STORAGE_CHECKBOX = "event_checklist_checkbox_state_v2";
-        const STORAGE_TEXT = "event_checklist_text_state_v2";
+    div.innerHTML = `
+        <input class="line-title" placeholder="Titre de la ligne">
+        <input class="line-note" placeholder="Note / détails">
+        <button class="delete-line">🗑</button>
+    `;
 
-        function saveCheckboxes() {
-            const boxes = document.querySelectorAll("input[type='checkbox'][id]");
-            const state = {};
-            boxes.forEach(b => state[b.id] = b.checked);
-            localStorage.setItem(STORAGE_CHECKBOX, JSON.stringify(state));
-        }
-
-        function loadCheckboxes() {
-            const raw = localStorage.getItem(STORAGE_CHECKBOX);
-            if (!raw) return;
-            const state = JSON.parse(raw);
-            Object.entries(state).forEach(([id, val]) => {
-                const el = document.getElementById(id);
-                if (el) el.checked = val;
-            });
-        }
-
-        function saveTextFields() {
-            const fields = document.querySelectorAll("input[type='text'][id]");
-            const state = {};
-            fields.forEach(f => state[f.id] = f.value);
-            localStorage.setItem(STORAGE_TEXT, JSON.stringify(state));
-        }
-
-        function loadTextFields() {
-            const raw = localStorage.getItem(STORAGE_TEXT);
-            if (!raw) return;
-            const state = JSON.parse(raw);
-            Object.entries(state).forEach(([id, val]) => {
-                const el = document.getElementById(id);
-                if (el) el.value = val;
-            });
-        }
-
-        document.body.addEventListener("change", e => {
-            if (e.target.matches("input[type='checkbox']")) saveCheckboxes();
-        });
-
-        document.body.addEventListener("input", e => {
-            if (e.target.matches("input[type='text']")) saveTextFields();
-        });
-
-        loadCheckboxes();
-        loadTextFields();
-
-
-        /* ---------------------------------------------------
-           ACCORDÉONS
-        --------------------------------------------------- */
-
-        function toggleAccordion(header) {
-            header.classList.toggle("open");
-            const content = header.nextElementSibling;
-            if (!content) return;
-            content.classList.toggle("open");
-        }
-
-        document.querySelectorAll(".accordion-header").forEach((h, i) => {
-            h.addEventListener("click", () => toggleAccordion(h));
-            if (i < 2) toggleAccordion(h);
-        });
-
-
-        /* ---------------------------------------------------
-           SYNCHRONISATION GITHUB
-        --------------------------------------------------- */
-
-        const repoOwner = "byNatey";
-        const repoName = "checklist-event";
-        const dataFilePath = "data.json";
-
-        function getToken() {
-            return localStorage.getItem("githubToken") || "";
-        }
-
-        document.getElementById("saveTokenBtn").onclick = () => {
-            const token = document.getElementById("githubToken").value.trim();
-            if (token.length < 10) {
-                alert("Token invalide");
-                return;
-            }
-            localStorage.setItem("githubToken", token);
-            alert("Token enregistré localement !");
-        };
-
-        async function loadDataFromGitHub() {
-            const token = getToken();
-            if (!token) return;
-
-            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
-
-            const response = await fetch(url, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            if (!response.ok) {
-                console.error("Erreur lecture GitHub", await response.text());
-                return;
-            }
-
-            const file = await response.json();
-            const content = JSON.parse(atob(file.content));
-
-            // Checkboxes
-            if (content.checkboxes) {
-                for (const id in content.checkboxes) {
-                    const checkbox = document.getElementById(id);
-                    if (checkbox) checkbox.checked = content.checkboxes[id];
-                }
-            }
-
-            // Champs texte
-            if (content.textfields) {
-                for (const id in content.textfields) {
-                    const field = document.getElementById(id);
-                    if (field) field.value = content.textfields[id];
-                }
-            }
-
-            document.getElementById("syncStatus").innerText = "Synchronisé depuis GitHub ✔";
-        }
-
-        async function saveDataToGitHub() {
-            const token = getToken();
-            if (!token) return;
-
-            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
-
-            const getResp = await fetch(url, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-
-            const file = await getResp.json();
-
-            // Checkboxes
-            const checkboxes = {};
-            document.querySelectorAll("input[type=checkbox][id]").forEach(cb => {
-                checkboxes[cb.id] = cb.checked;
-            });
-
-            // Champs texte
-            const textfields = {};
-            document.querySelectorAll("input[type=text][id]").forEach(tf => {
-                textfields[tf.id] = tf.value;
-            });
-
-            const newContent = {
-                checkboxes,
-                textfields
-            };
-
-            const encoded = btoa(JSON.stringify(newContent, null, 2));
-
-            await fetch(url, {
-                method: "PUT",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    message: "Update checklist",
-                    content: encoded,
-                    sha: file.sha
-                })
-            });
-
-            document.getElementById("syncStatus").innerText = "Synchronisé vers GitHub ✔";
-        }
-
-        document.getElementById("syncNowBtn").onclick = () => {
-            loadDataFromGitHub();
-        };
-
-        setInterval(() => {
-            loadDataFromGitHub();
-        }, 15000);
-
-
-        /* ---------------------------------------------------
-           AJOUT DYNAMIQUE DE TÂCHES
-        --------------------------------------------------- */
-
-        function createUniqueId(prefix) {
-            return prefix + "_" + Math.random().toString(36).substring(2, 10);
-        }
-
-        function addNewTask(container) {
-            const idCheckbox = createUniqueId("cb");
-            const idText = createUniqueId("txt");
-
-            const wrapper = document.createElement("div");
-            wrapper.innerHTML = `
-                <input type="checkbox" id="${idCheckbox}">
-                <label for="${idCheckbox}">Nouvelle tâche</label><br>
-                <input type="text" id="${idText}" placeholder="Note…"><br>
-            `;
-
-            const btn = container.querySelector(".addTaskBtn");
-            container.insertBefore(wrapper, btn);
-
-            const cb = wrapper.querySelector(`#${idCheckbox}`);
-            const tf = wrapper.querySelector(`#${idText}`);
-
-            cb.addEventListener("change", () => {
-                saveCheckboxes();
-                saveDataToGitHub();
-            });
-
-            tf.addEventListener("input", () => {
-                saveTextFields();
-                saveDataToGitHub();
-            });
-
-            saveCheckboxes();
-            saveTextFields();
-            saveDataToGitHub();
-        }
-
-        document.querySelectorAll(".addTaskBtn").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const container = btn.closest(".accordion-content");
-                addNewTask(container);
-            });
-        });
-
-        // Synchronisation initiale
-        loadDataFromGitHub();
-
+    div.querySelector(".delete-line").addEventListener("click", () => {
+        div.remove();
+        saveToLocal();
     });
+
+    return div;
+}
+
+document.querySelectorAll(".add-line").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const parent = btn.parentElement;
+        parent.insertBefore(createLine(), btn);
+        saveToLocal();
+    });
+});
+
+/* ============================
+   SAUVEGARDE LOCALE
+============================ */
+
+function saveToLocal() {
+    const data = {};
+
+    document.querySelectorAll(".subsection-content").forEach(sec => {
+        const id = sec.id;
+        data[id] = [];
+
+        sec.querySelectorAll(".line").forEach(line => {
+            data[id].push({
+                title: line.querySelector(".line-title").value,
+                note: line.querySelector(".line-note").value
+            });
+        });
+    });
+
+    localStorage.setItem("checklistData", JSON.stringify(data));
+}
+
+function loadFromLocal() {
+    const raw = localStorage.getItem("checklistData");
+    if (!raw) return;
+
+    const data = JSON.parse(raw);
+
+    for (const id in data) {
+        const sec = document.getElementById(id);
+        if (!sec) continue;
+
+        const addBtn = sec.querySelector(".add-line");
+        sec.querySelectorAll(".line").forEach(l => l.remove());
+
+        data[id].forEach(item => {
+            const line = createLine();
+            line.querySelector(".line-title").value = item.title;
+            line.querySelector(".line-note").value = item.note;
+            sec.insertBefore(line, addBtn);
+        });
+    }
+}
+
+loadFromLocal();
+
+/* ============================
+   SYNCHRONISATION GITHUB
+============================ */
+
+async function syncToGitHub() {
+    const token = localStorage.getItem("githubToken");
+    if (!token) {
+        alert("Aucun token GitHub enregistré.");
+        return;
+    }
+
+    const data = localStorage.getItem("checklistData");
+
+    const repo = "bynatey/checklist-event";
+    const path = "data.json";
+
+    const getFile = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        headers: { Authorization: `token ${token}` }
+    });
+
+    const fileInfo = await getFile.json();
+
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: "PUT",
+        headers: {
+            Authorization: `token ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: "Mise à jour checklist",
+            content: btoa(unescape(encodeURIComponent(data))),
+            sha: fileInfo.sha
+        })
+    });
+
+    document.getElementById("syncStatus").textContent = "Synchronisation réussie !";
+}
+
+document.getElementById("syncNowBtn").addEventListener("click", syncToGitHub);
+
+document.getElementById("saveTokenBtn").addEventListener("click", () => {
+    const token = document.getElementById("githubToken").value;
+    localStorage.setItem("githubToken", token);
+    alert("Token enregistré !");
+});
+
+/* ============================
+   MODE SOMBRE
+============================ */
+
+document.getElementById("darkModeBtn").addEventListener("click", () => {
+    document.body.classList.toggle("light");
+});
+
+/* ============================
+   RESET
+============================ */
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+    if (confirm("Réinitialiser toute la checklist ?")) {
+        localStorage.removeItem("checklistData");
+        location.reload();
+    }
+});
+
     </script>
 
 </body>
