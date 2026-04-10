@@ -837,7 +837,146 @@ document.addEventListener("DOMContentLoaded", () => {
     if (i < 3) toggleAccordion(h);
   });
 });
+  // -----------------------------
+// CONFIG
+// -----------------------------
+const repoOwner = "byNatey";
+const repoName = "checklist-event";
+const dataFilePath = "data.json";
+
+// -----------------------------
+// TOKEN LOCAL
+// -----------------------------
+function getToken() {
+    return localStorage.getItem("githubToken") || "";
+}
+
+document.getElementById("saveTokenBtn").onclick = () => {
+    const token = document.getElementById("githubToken").value.trim();
+    if (token.length < 10) {
+        alert("Token invalide");
+        return;
+    }
+    localStorage.setItem("githubToken", token);
+    alert("Token enregistré localement !");
+};
+
+// -----------------------------
+// LECTURE DU FICHIER data.json
+// -----------------------------
+async function loadDataFromGitHub() {
+    const token = getToken();
+    if (!token) return;
+
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
+
+    const response = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    if (!response.ok) {
+        console.error("Erreur lecture GitHub", await response.text());
+        return;
+    }
+
+    const file = await response.json();
+    const content = JSON.parse(atob(file.content));
+
+    // Mise à jour des cases
+    for (const id in content.checkboxes) {
+        const checkbox = document.getElementById(id);
+        if (checkbox) checkbox.checked = content.checkboxes[id];
+    }
+
+    document.getElementById("syncStatus").innerText = "Synchronisé depuis GitHub ✔";
+}
+
+// -----------------------------
+// ÉCRITURE DANS data.json
+// -----------------------------
+async function saveDataToGitHub() {
+    const token = getToken();
+    if (!token) return;
+
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
+
+    // Lire la version actuelle pour obtenir le SHA
+    const getResp = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const file = await getResp.json();
+
+    // Construire les données
+    const checkboxes = {};
+    document.querySelectorAll("input[type=checkbox]").forEach(cb => {
+        checkboxes[cb.id] = cb.checked;
+    });
+
+    const newContent = {
+        checkboxes: checkboxes
+    };
+
+    // Encoder en base64
+    const encoded = btoa(JSON.stringify(newContent, null, 2));
+
+    // Envoyer la mise à jour
+    await fetch(url, {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            message: "Update checklist",
+            content: encoded,
+            sha: file.sha
+        })
+    });
+
+    document.getElementById("syncStatus").innerText = "Synchronisé vers GitHub ✔";
+}
+
+// -----------------------------
+// SYNCHRO MANUELLE
+// -----------------------------
+document.getElementById("syncNowBtn").onclick = () => {
+    loadDataFromGitHub();
+};
+
+// -----------------------------
+// SYNCHRO AUTOMATIQUE (15s)
+// -----------------------------
+setInterval(() => {
+    loadDataFromGitHub();
+}, 15000);
+
+// -----------------------------
+// SAUVEGARDE AUTOMATIQUE LORS DU CLIC
+// -----------------------------
+document.querySelectorAll("input[type=checkbox]").forEach(cb => {
+    cb.addEventListener("change", () => {
+        saveDataToGitHub();
+    });
+});
+
+// Charger les données au démarrage
+loadDataFromGitHub();
+
 </script>
 
+<div style="padding: 10px; border-top: 1px solid #444; margin-top: 20px;">
+    <h3>Synchronisation</h3>
+
+    <label for="githubToken">Token GitHub :</label>
+    <input type="password" id="githubToken" placeholder="Collez votre token ici" style="width:100%; margin-bottom:10px;">
+
+    <button id="saveTokenBtn">Enregistrer le token</button>
+    <button id="syncNowBtn">Synchroniser maintenant</button>
+
+    <p id="syncStatus" style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;"></p>
+</div>
+
+  
 </body>
 </html>
