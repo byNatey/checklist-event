@@ -4,288 +4,365 @@
     <meta charset="UTF-8">
     <title>Checklist – Événement Drink & Jeux</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <style>
-        /* ====== RESET ====== */
-        body, h1, h2, h3, p, div, input, button {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* ====== GLOBAL ====== */
-        body {
-            background: #1e1e1e;
-            color: white;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
-        }
-
-        header {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            font-size: 22px;
-            margin: 25px 0 10px 0;
-            font-weight: bold;
-        }
-
-        .subsection-title {
-            font-weight: bold;
-            margin: 12px 0 6px 0;
-        }
-
-        .top-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        button {
-            background: #333;
-            color: white;
-            border: 1px solid #555;
-            padding: 6px 12px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background: #444;
-        }
-
-        /* ====== LIGNES ====== */
-        .line {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 8px;
-        }
-
-        .line-title, .line-note {
-            width: 100%;
-            padding: 6px;
-            margin-bottom: 5px;
-            background: #2a2a2a;
-            border: 1px solid #555;
-            color: white;
-            border-radius: 4px;
-        }
-
-        .delete-line {
-            background: #7a1f1f;
-            border: 1px solid #aa2a2a;
-            width: 80px;
-        }
-
-        .delete-line:hover {
-            background: #992222;
-        }
-
-        .add-line {
-            margin-top: 5px;
-            background: #1f7a39;
-            border: 1px solid #2aaa55;
-            width: 160px;
-        }
-
-        .add-line:hover {
-            background: #22a94a;
-        }
-
-        /* ====== PANNEAU DE SYNCHRO ====== */
-        #syncPanel {
-            width: 260px;
-            background: #2a2a2a;
-            border: 1px solid #444;
-            padding: 15px;
-            border-radius: 6px;
-            height: fit-content;
-        }
-
-        #syncPanel input {
-            width: 100%;
-            padding: 6px;
-            margin: 6px 0;
-            background: #1c1c1c;
-            border: 1px solid #555;
-            color: white;
-            border-radius: 4px;
-        }
-
-        #syncStatus {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #8fd18f;
-        }
-
-        /* ====== MODE SOMBRE (toggle) ====== */
-        body.light {
-            background: #f5f5f5;
-            color: black;
-        }
-
-        body.light input {
-            background: white;
-            color: black;
-            border: 1px solid #ccc;
-        }
-
-        body.light button {
-            background: #ddd;
-            color: black;
-            border: 1px solid #aaa;
-        }
-
-        body.light #syncPanel {
-            background: #e0e0e0;
-            border-color: #bbb;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <main style="flex:1">
+    <aside class="sidebar">
+        <h3>Navigation</h3>
+        <button data-target="sec1">Événement matinal</button>
+        <button data-target="sec2">Événement après-midi</button>
+        <button data-target="sec3LAN">Technique LAN</button>
+        <button data-target="sec3PARK">Technique Parking</button>
+        <button data-target="sec3GEN">Technique générale</button>
+    </aside>
 
-        <h1>Checklist – Événement Drink & Jeux</h1>
+    <main>
+        <header>
+            <h1>Checklist – Événement Drink & Jeux</h1>
+            <div class="top-buttons">
+                <button id="pdfBtn">PDF</button>
+                <button id="resetBtn">Réinitialiser</button>
+                <button id="darkModeBtn">Mode sombre</button>
+            </div>
+        </header>
 
-        <div class="top-buttons">
-            <button id="pdfBtn">PDF</button>
-            <button id="resetBtn">Réinitialiser</button>
-            <button id="darkModeBtn">Mode sombre</button>
-        </div>
+        <!-- 1) Événement matinal – LAN -->
+        <section id="sec1">
+            <h2>1) Événement matinal – LAN</h2>
 
-        <!-- ========================= -->
-        <!-- SECTION 1 : LAN MATINAL -->
-        <!-- ========================= -->
-        <h2>1) Événement matinal – LAN</h2>
+            <div class="subsection-title">A. Matériel</div>
+            <div class="subsection" id="sec1A">
+                <!-- Contenu de base -->
+                <div class="line">
+                    <input class="line-title" value="Nombre de Nintendo Switch disponibles">
+                    <input class="line-note" value="Ex : 3 consoles">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Jeux disponibles (Mario Kart, Smash, etc)">
+                    <input class="line-note" value="Liste des jeux">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Projecteurs à emprunter">
+                    <input class="line-note" value="Ex : 2 projecteurs">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Manettes disponibles (2 par Switch minimum)">
+                    <input class="line-note" value="Ex : 6 manettes">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Multiprises & rallonges">
+                    <input class="line-note" value="Quantité / emplacement">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Écrans / murs de projection disponibles">
+                    <input class="line-note" value="Salle / emplacement">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <div class="subsection-title">A. Matériel</div>
-        <div id="sec1A">
-
-            <div class="line">
-                <input class="line-title" value="Nombre de Nintendo Switch disponibles">
-                <input class="line-note" placeholder="Ex : 3 consoles">
-                <button class="delete-line">🗑</button>
+                <button class="add-line">+ Ajouter une ligne</button>
             </div>
 
-            <div class="line">
-                <input class="line-title" value="Jeux disponibles (Mario Kart, Smash, etc)">
-                <input class="line-note" placeholder="Liste des jeux">
-                <button class="delete-line">🗑</button>
+            <div class="subsection-title">B. Logistique</div>
+            <div class="subsection" id="sec1B">
+                <div class="line">
+                    <input class="line-title" value="Local attribué pour la LAN">
+                    <input class="line-note" value="Nom / numéro du local">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Organisation de l’installation (qui fait quoi)">
+                    <input class="line-note" value="Responsables installation">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Organisation du rangement">
+                    <input class="line-note" value="Responsables rangement">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Sécurisation des câbles au sol (ruban adhésif)">
+                    <input class="line-note" value="Zones à sécuriser">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Ventilation du local (projecteurs qui chauffent)">
+                    <input class="line-note" value="Fenêtres / portes / ventilateurs">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Format : tournoi ou free-play">
+                    <input class="line-note" value="Ex : tournoi Mario Kart">
+                    <button class="delete-line">🗑</button>
+                </div>
+
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
+        </section>
+
+        <!-- 2) Événement après-midi – Parking / Drink -->
+        <section id="sec2">
+            <h2>2) Événement après-midi – Parking / Drink</h2>
+
+            <div class="subsection-title">A. Matériel</div>
+            <div class="subsection" id="sec2A">
+                <div class="line">
+                    <input class="line-title" value="Matériel pour le bar (table, nappes, gobelets, serviettes)">
+                    <input class="line-note" value="Détails du bar">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Frigo / glacière disponible">
+                    <input class="line-note" value="Qui apporte ?">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Boissons prévues (softs ou alcool)">
+                    <input class="line-note" value="Liste des boissons">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Enceintes (Bluetooth ou système plus puissant)">
+                    <input class="line-note" value="Qui prête ?">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Lumières (LED, spots, guirlandes)">
+                    <input class="line-note" value="Type de lumières">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Tente / abri (si disponible)">
+                    <input class="line-note" value="Disponibilité / taille">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Accès à l’électricité extérieure">
+                    <input class="line-note" value="Emplacement de la prise">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Rallonges longues & multiprises">
+                    <input class="line-note" value="Quantité / longueur">
+                    <button class="delete-line">🗑</button>
+                </div>
+
+                <button class="add-line">+ Ajouter une ligne</button>
             </div>
 
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">B. Logistique</div>
+            <div class="subsection" id="sec2B">
+                <div class="line">
+                    <input class="line-title" value="Organisation du bar">
+                    <input class="line-note" value="Qui fait quoi ?">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Sécurité / circulation">
+                    <input class="line-note" value="Zones / consignes">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Gestion des déchets">
+                    <input class="line-note" value="Sacs, poubelles, tri">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Planning des bénévoles">
+                    <input class="line-note" value="Créneaux / rôles">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <div class="subsection-title">B. Logistique</div>
-        <div id="sec1B">
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
+        </section>
 
-            <div class="line">
-                <input class="line-title" value="Local attribué pour la LAN">
-                <input class="line-note" placeholder="Nom / numéro du local">
-                <button class="delete-line">🗑</button>
+        <!-- 3) Aspects techniques – LAN -->
+        <section id="sec3LAN">
+            <h2>3) Aspects techniques – LAN</h2>
+
+            <div class="subsection-title">A. Matériel</div>
+            <div class="subsection" id="sec3LAN_A">
+                <div class="line">
+                    <input class="line-title" value="Alimentation électrique (prises disponibles)">
+                    <input class="line-note" value="Emplacements / quantité">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Câblage HDMI / USB-C / adaptateurs">
+                    <input class="line-note" value="Liste des câbles nécessaires">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Écrans / projecteurs">
+                    <input class="line-note" value="Quantité / emplacement">
+                    <button class="delete-line">🗑</button>
+                </div>
+
+                <button class="add-line">+ Ajouter une ligne</button>
             </div>
 
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">B. Logistique</div>
+            <div class="subsection" id="sec3LAN_B">
+                <div class="line">
+                    <input class="line-title" value="Installation du matériel (ordre, câblage, sécurité)">
+                    <input class="line-note" value="Responsables / étapes">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Rangement et inventaire du matériel">
+                    <input class="line-note" value="Qui range quoi ?">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <!-- ========================= -->
-        <!-- SECTION 2 : DRINK & JEUX -->
-        <!-- ========================= -->
-        <h2>2) Événement après-midi – Parking / Drink</h2>
-
-        <div class="subsection-title">A. Matériel</div>
-        <div id="sec2A">
-
-            <div class="line">
-                <input class="line-title" value="Matériel pour le bar (table, nappes, gobelets)">
-                <input class="line-note" placeholder="Détails du bar">
-                <button class="delete-line">🗑</button>
+                <button class="add-line">+ Ajouter une ligne</button>
             </div>
 
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">C. Éléments souvent oubliés</div>
+            <div class="subsection" id="sec3LAN_C">
+                <div class="line">
+                    <input class="line-title" value="Ruban adhésif pour sécuriser les câbles">
+                    <input class="line-note" value="Zones à sécuriser">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Chiffons pour nettoyer les tables">
+                    <input class="line-note" value="Quantité">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Powerbanks / chargeurs">
+                    <input class="line-note" value="Besoin estimé">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <div class="subsection-title">B. Logistique</div>
-        <div id="sec2B">
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
+        </section>
 
-            <div class="line">
-                <input class="line-title" value="Organisation du bar">
-                <input class="line-note" placeholder="Qui fait quoi ?">
-                <button class="delete-line">🗑</button>
+        <!-- 3) Aspects techniques – Parking -->
+        <section id="sec3PARK">
+            <h2>3) Aspects techniques – Parking</h2>
+
+            <div class="subsection-title">A. Matériel</div>
+            <div class="subsection" id="sec3PARK_A">
+                <div class="line">
+                    <input class="line-title" value="Système son (enceintes, câbles, alimentation)">
+                    <input class="line-note" value="Type / puissance">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Lumières (LED, spots, guirlandes)">
+                    <input class="line-note" value="Liste du matériel">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Accès à l’électricité extérieure">
+                    <input class="line-note" value="Emplacement de la prise">
+                    <button class="delete-line">🗑</button>
+                </div>
+
+                <button class="add-line">+ Ajouter une ligne</button>
             </div>
 
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">B. Logistique</div>
+            <div class="subsection" id="sec3PARK_B">
+                <div class="line">
+                    <input class="line-title" value="Installation du matériel (son, lumière, bar)">
+                    <input class="line-note" value="Responsables / étapes">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Sécurité (circulation, zones interdites)">
+                    <input class="line-note" value="Détails sécurité">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <!-- ========================= -->
-        <!-- SECTION 3 : ASPECTS TECHNIQUES -->
-        <!-- ========================= -->
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
 
-        <h2>3) Aspects techniques – LAN</h2>
+            <div class="subsection-title">C. Éléments souvent oubliés</div>
+            <div class="subsection" id="sec3PARK_C">
+                <div class="line">
+                    <input class="line-title" value="Lampes LED portables">
+                    <input class="line-note" value="Quantité / emplacement">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Rubalise pour délimiter les zones">
+                    <input class="line-note" value="Zones à baliser">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Sacs poubelles">
+                    <input class="line-note" value="">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <div class="subsection-title">A. Matériel</div>
-        <div id="sec3LAN_A">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
+        </section>
 
-        <div class="subsection-title">B. Logistique</div>
-        <div id="sec3LAN_B">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+        <!-- 3) Aspects techniques – Général -->
+        <section id="sec3GEN">
+            <h2>3) Aspects techniques – Général</h2>
 
-        <div class="subsection-title">C. Éléments souvent oubliés</div>
-        <div id="sec3LAN_C">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">A. Matériel</div>
+            <div class="subsection" id="sec3GEN_A">
+                <div class="line">
+                    <input class="line-title" value="Extincteur disponible">
+                    <input class="line-note" value="Emplacement">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Multiprises supplémentaires">
+                    <input class="line-note" value="Quantité">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <h2>3) Aspects techniques – Parking</h2>
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
 
-        <div class="subsection-title">A. Matériel</div>
-        <div id="sec3PARK_A">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">B. Logistique</div>
+            <div class="subsection" id="sec3GEN_B">
+                <div class="line">
+                    <input class="line-title" value="Planning d’installation">
+                    <input class="line-note" value="Heures / responsables">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Transport du matériel">
+                    <input class="line-note" value="Qui transporte quoi ?">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <div class="subsection-title">B. Logistique</div>
-        <div id="sec3PARK_B">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
 
-        <div class="subsection-title">C. Éléments souvent oubliés</div>
-        <div id="sec3PARK_C">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
+            <div class="subsection-title">C. Éléments souvent oubliés</div>
+            <div class="subsection" id="sec3GEN_C">
+                <div class="line">
+                    <input class="line-title" value="Chargeurs divers">
+                    <input class="line-note" value="Type / quantité">
+                    <button class="delete-line">🗑</button>
+                </div>
+                <div class="line">
+                    <input class="line-title" value="Eau pour les bénévoles">
+                    <input class="line-note" value="Quantité / emplacement">
+                    <button class="delete-line">🗑</button>
+                </div>
 
-        <h2>3) Aspects techniques – Général</h2>
-
-        <div class="subsection-title">A. Matériel</div>
-        <div id="sec3GEN_A">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
-
-        <div class="subsection-title">B. Logistique</div>
-        <div id="sec3GEN_B">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
-
-        <div class="subsection-title">C. Éléments souvent oubliés</div>
-        <div id="sec3GEN_C">
-            <button class="add-line">+ Ajouter une ligne</button>
-        </div>
-
+                <button class="add-line">+ Ajouter une ligne</button>
+            </div>
+        </section>
     </main>
 
-    <!-- PANNEAU DE SYNCHRONISATION -->
     <aside id="syncPanel">
         <h3>Synchronisation</h3>
         <label>Token GitHub :</label>
@@ -295,150 +372,6 @@
         <p id="syncStatus"></p>
     </aside>
 
-    <script>
-        /* ============================
-           AJOUT / SUPPRESSION DE LIGNES
-        ============================ */
-
-        function createLine() {
-            const div = document.createElement("div");
-            div.className = "line";
-
-            div.innerHTML = `
-                <input class="line-title" placeholder="Titre de la ligne">
-                <input class="line-note" placeholder="Note / détails">
-                <button class="delete-line">🗑</button>
-            `;
-
-            div.querySelector(".delete-line").addEventListener("click", () => {
-                div.remove();
-                saveToLocal();
-            });
-
-            return div;
-        }
-
-        document.querySelectorAll(".add-line").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const parent = btn.parentElement;
-                parent.insertBefore(createLine(), btn);
-                saveToLocal();
-            });
-        });
-
-        /* ============================
-           SAUVEGARDE LOCALE
-        ============================ */
-
-        function saveToLocal() {
-            const data = {};
-
-            document.querySelectorAll("div[id]").forEach(sec => {
-                const id = sec.id;
-                if (!id.startsWith("sec")) return;
-
-                data[id] = [];
-
-                sec.querySelectorAll(".line").forEach(line => {
-                    data[id].push({
-                        title: line.querySelector(".line-title").value,
-                        note: line.querySelector(".line-note").value
-                    });
-                });
-            });
-
-            localStorage.setItem("checklistData", JSON.stringify(data));
-        }
-
-        function loadFromLocal() {
-            const raw = localStorage.getItem("checklistData");
-            if (!raw) return;
-
-            const data = JSON.parse(raw);
-
-            for (const id in data) {
-                const sec = document.getElementById(id);
-                if (!sec) continue;
-
-                const addBtn = sec.querySelector(".add-line");
-                sec.querySelectorAll(".line").forEach(l => l.remove());
-
-                data[id].forEach(item => {
-                    const line = createLine();
-                    line.querySelector(".line-title").value = item.title;
-                    line.querySelector(".line-note").value = item.note;
-                    sec.insertBefore(line, addBtn);
-                });
-            }
-        }
-
-        loadFromLocal();
-
-        /* ============================
-           SYNCHRONISATION GITHUB
-        ============================ */
-
-        async function syncToGitHub() {
-            const token = localStorage.getItem("githubToken");
-            if (!token) {
-                alert("Aucun token GitHub enregistré.");
-                return;
-            }
-
-            const data = localStorage.getItem("checklistData");
-
-            const repo = "bynatey/checklist-event";
-            const path = "data.json";
-
-            const getFile = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-                headers: { Authorization: `token ${token}` }
-            });
-
-            const fileInfo = await getFile.json();
-
-            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-                method: "PUT",
-                headers: {
-                    Authorization: `token ${token}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    message: "Mise à jour checklist",
-                    content: btoa(unescape(encodeURIComponent(data))),
-                    sha: fileInfo.sha
-                })
-            });
-
-            document.getElementById("syncStatus").textContent = "Synchronisation réussie !";
-        }
-
-        document.getElementById("syncNowBtn").addEventListener("click", syncToGitHub);
-
-        document.getElementById("saveTokenBtn").addEventListener("click", () => {
-            const token = document.getElementById("githubToken").value;
-            localStorage.setItem("githubToken", token);
-            alert("Token enregistré !");
-        });
-
-        /* ============================
-           MODE SOMBRE
-        ============================ */
-
-        document.getElementById("darkModeBtn").addEventListener("click", () => {
-            document.body.classList.toggle("light");
-        });
-
-        /* ============================
-           RESET
-        ============================ */
-
-        document.getElementById("resetBtn").addEventListener("click", () => {
-            if (confirm("Réinitialiser toute la checklist ?")) {
-                localStorage.removeItem("checklistData");
-                location.reload();
-            }
-        });
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
