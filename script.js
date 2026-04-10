@@ -74,7 +74,13 @@ const initialData = {
     ]
 };
 
-// Création d'une ligne
+const REPO = "bynatey/checklist-event";
+const PATH = "data.json";
+const LS_KEY_DATA = "checklist_cisc";
+const LS_KEY_TOKEN = "checklist_token";
+const LS_KEY_THEME = "checklist_theme";
+
+// Création d'une ligne (avec suppression)
 function createLine(sectionId, title, sub, checked = false) {
     const line = document.createElement("div");
     line.className = "checkline";
@@ -104,13 +110,22 @@ function createLine(sectionId, title, sub, checked = false) {
     textWrap.appendChild(t);
     textWrap.appendChild(s);
 
+    const del = document.createElement("button");
+    del.className = "delete-line";
+    del.textContent = "🗑";
+    del.addEventListener("click", () => {
+        line.remove();
+        saveState();
+    });
+
     line.appendChild(box);
     line.appendChild(textWrap);
+    line.appendChild(del);
 
     return line;
 }
 
-// Rendu initial ou depuis stockage
+// Rendu depuis un objet de données
 function renderFromData(data) {
     Object.keys(initialData).forEach(id => {
         const container = document.getElementById(id);
@@ -127,7 +142,7 @@ function renderFromData(data) {
     });
 }
 
-// Sauvegarde dans localStorage
+// Sauvegarde locale
 function saveState() {
     const result = {};
     Object.keys(initialData).forEach(id => {
@@ -145,12 +160,12 @@ function saveState() {
             });
         });
     });
-    localStorage.setItem("checklist_cisc", JSON.stringify(result));
+    localStorage.setItem(LS_KEY_DATA, JSON.stringify(result));
 }
 
-// Chargement
-function loadState() {
-    const raw = localStorage.getItem("checklist_cisc");
+// Chargement local
+function loadLocalState() {
+    const raw = localStorage.getItem(LS_KEY_DATA);
     if (!raw) {
         renderFromData(null);
         return;
@@ -160,6 +175,31 @@ function loadState() {
         renderFromData(data);
     } catch {
         renderFromData(null);
+    }
+}
+
+// Synchro descendante depuis GitHub (si token présent)
+async function loadFromGitHubIfPossible() {
+    const token = localStorage.getItem(LS_KEY_TOKEN);
+    if (!token) {
+        // Pas de token → on reste sur localStorage
+        return;
+    }
+    try {
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
+            headers: { Authorization: `token ${token}` }
+        });
+        if (!res.ok) return;
+        const file = await res.json();
+        if (!file.content) return;
+        const decoded = decodeURIComponent(escape(atob(file.content)));
+        const data = JSON.parse(decoded);
+        renderFromData(data);
+        localStorage.setItem(LS_KEY_DATA, JSON.stringify(data));
+        const status = document.getElementById("syncStatus");
+        if (status) status.textContent = "Données chargées depuis GitHub.";
+    } catch (e) {
+        console.error("Erreur synchro descendante :", e);
     }
 }
 
@@ -183,13 +223,13 @@ document.querySelectorAll(".add-line").forEach(btn => {
 // Boutons header
 document.getElementById("resetBtn").addEventListener("click", () => {
     if (!confirm("Réinitialiser toute la checklist ?")) return;
-    localStorage.removeItem("checklist_cisc");
-    loadState();
+    localStorage.removeItem(LS_KEY_DATA);
+    loadLocalState();
 });
 
 document.getElementById("darkModeBtn").addEventListener("click", () => {
     document.body.classList.toggle("dark");
-    localStorage.setItem("checklist_theme", document.body.classList.contains("dark") ? "dark" : "light");
+    localStorage.setItem(LS_KEY_THEME, document.body.classList.contains("dark") ? "dark" : "light");
 });
 
 document.getElementById("pdfBtn").addEventListener("click", () => {
@@ -198,39 +238,38 @@ document.getElementById("pdfBtn").addEventListener("click", () => {
 
 // Thème au chargement
 (function initTheme() {
-    const t = localStorage.getItem("checklist_theme");
+    const t = localStorage.getItem(LS_KEY_THEME);
     if (t === "dark") document.body.classList.add("dark");
 })();
 
-// Synchro GitHub
+// Enregistrer token
 document.getElementById("saveTokenBtn").addEventListener("click", () => {
     const token = document.getElementById("githubToken").value.trim();
     if (!token) {
         alert("Token vide.");
         return;
     }
-    localStorage.setItem("checklist_token", token);
+    localStorage.setItem(LS_KEY_TOKEN, token);
     alert("Token enregistré.");
 });
 
+// Synchro montante vers GitHub
 document.getElementById("syncNowBtn").addEventListener("click", async () => {
-    const token = localStorage.getItem("checklist_token");
+    const token = localStorage.getItem(LS_KEY_TOKEN);
     if (!token) {
         alert("Aucun token enregistré.");
         return;
     }
 
-    const data = localStorage.getItem("checklist_cisc") || "{}";
-    const repo = "bynatey/checklist-event";
-    const path = "data.json";
+    const data = localStorage.getItem(LS_KEY_DATA) || "{}";
 
     try {
-        const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
             headers: { Authorization: `token ${token}` }
         });
         const file = await res.json();
 
-        const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${PATH}`, {
             method: "PUT",
             headers: {
                 Authorization: `token ${token}`,
@@ -243,14 +282,22 @@ document.getElementById("syncNowBtn").addEventListener("click", async () => {
             })
         });
 
-        if (!putRes.ok) throw new Error("Erreur API GitHub");
+        const status = document.getElementById("syncStatus");
+        if (!putRes.ok) {
+            if (status) status.textContent = "Erreur de synchronisation.";
+            throw new Error("Erreur API GitHub");
+        }
 
-        document.getElementById("syncStatus").textContent = "Synchronisation réussie.";
+        if (status) status.textContent = "Synchronisation réussie.";
     } catch (e) {
-        document.getElementById("syncStatus").textContent = "Erreur de synchronisation.";
+        const status = document.getElementById("syncStatus");
+        if (status) status.textContent = "Erreur de synchronisation.";
         console.error(e);
     }
 });
 
-// Init
-loadState();
+// Init : d'abord local, puis GitHub si possible
+(async function init() {
+    loadLocalState();
+    await loadFromGitHubIfPossible();
+})();
