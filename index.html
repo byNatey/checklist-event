@@ -1,983 +1,331 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Checklist Événement – Drink & Jeux</title>
+    <meta charset="UTF-8">
+    <title>Checklist Event</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --text: #e5e7eb;
-  --accent: #6366f1;
-  --accent2: #22d3ee;
-  --border: #334155;
-  --shadow: rgba(0,0,0,0.6);
-}
-
-/* Thèmes */
-body.theme-comite {
-  --accent: #6366f1;
-  --accent2: #22d3ee;
-}
-body.theme-neutre {
-  --bg: #111827;
-  --card: #1f2933;
-  --accent: #9ca3af;
-  --accent2: #6b7280;
-}
-body.theme-punchy {
-  --accent: #f97316;
-  --accent2: #ec4899;
-}
-body.theme-classique {
-  --bg: #0b1120;
-  --card: #020617;
-  --accent: #818cf8;
-  --accent2: #38bdf8;
-}
-
-body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  min-height: 100vh;
-}
-
-/* Sidebar */
-.sidebar {
-  width: 240px;
-  background: #020617;
-  color: #e5e7eb;
-  padding: 16px;
-  box-sizing: border-box;
-  border-right: 1px solid #111827;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-}
-
-.sidebar h2 {
-  font-size: 1.2rem;
-  margin: 0 0 12px;
-  color: var(--accent2);
-}
-
-.nav-link {
-  display: block;
-  padding: 8px 10px;
-  margin: 4px 0;
-  border-radius: 6px;
-  color: #e5e7eb;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-.nav-link:hover {
-  background: #111827;
-}
-.nav-link span {
-  margin-right: 6px;
-}
-
-/* Hamburger (mobile) */
-.sidebar-toggle {
-  display: none;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 50;
-  background: #020617;
-  color: #e5e7eb;
-  border-radius: 999px;
-  border: 1px solid #1f2937;
-  padding: 8px 10px;
-  cursor: pointer;
-}
-
-/* Main content */
-.main {
-  flex: 1;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-h1 {
-  margin: 0;
-  font-size: 1.7rem;
-  color: var(--accent2);
-}
-
-.controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-button {
-  padding: 8px 12px;
-  border-radius: 999px;
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: white;
-}
-.btn-secondary {
-  background: var(--accent2);
-  color: #0f172a;
-}
-.btn-ghost {
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-}
-
-/* Sections */
-.section {
-  background: var(--card);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px var(--shadow);
-  border: 1px solid var(--border);
-}
-
-.section h2 {
-  margin-top: 0;
-  font-size: 1.3rem;
-  color: var(--accent);
-}
-
-/* Accordéons */
-.accordion {
-  margin-top: 10px;
-}
-.accordion-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  padding: 8px 10px;
-  border-radius: 8px;
-  background: #02061766;
-  margin-bottom: 4px;
-}
-.accordion-header span {
-  font-weight: 600;
-}
-.accordion-header .chevron {
-  transition: transform 0.2s;
-}
-.accordion-header.open .chevron {
-  transform: rotate(90deg);
-}
-.accordion-content {
-  padding: 6px 4px 4px 4px;
-  display: none;
-}
-.accordion-content.open {
-  display: block;
-}
-
-/* Items */
-.item {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  margin: 6px 0;
-}
-.item label {
-  flex: 1 1 200px;
-}
-.text-field {
-  flex: 1 1 100%;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: #020617;
-  color: var(--text);
-}
-
-/* Compact mode */
-body.compact .section {
-  padding: 10px;
-  margin-bottom: 10px;
-}
-body.compact .item {
-  margin: 3px 0;
-}
-body.compact .text-field {
-  display: none;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .sidebar {
-    position: fixed;
-    left: -260px;
-    top: 0;
-    height: 100vh;
-    z-index: 40;
-    transition: left 0.2s;
-  }
-  .sidebar.open {
-    left: 0;
-  }
-  .sidebar-toggle {
-    display: inline-flex;
-  }
-  body {
-    flex-direction: column;
-  }
-  .main {
-    padding-top: 50px;
-  }
-}
-
-@media (min-width: 1100px) {
-  .two-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-}
-
-/* Print */
-@media print {
-  .sidebar,
-  .sidebar-toggle,
-  .controls {
-    display: none !important;
-  }
-  body {
-    background: white;
-  }
-  .section {
-    box-shadow: none;
-    border: 1px solid #ddd;
-  }
-}
-</style>
+    <style>
+        body {
+            background: #111;
+            color: #eee;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .accordion-header {
+            cursor: pointer;
+            padding: 10px;
+            background: #222;
+            border: 1px solid #333;
+            margin-top: 5px;
+        }
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+        }
+        .accordion-content.open {
+            display: block;
+        }
+        .dark-mode-extra {
+            background: #000;
+            color: #fff;
+        }
+        .compact input[type=text] {
+            height: 22px;
+        }
+        .addTaskBtn {
+            margin-top: 8px;
+            padding: 4px 8px;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
-<body class="theme-comite">
 
-<button class="sidebar-toggle" onclick="toggleSidebar()">☰ Menu</button>
+<body>
 
-<nav class="sidebar" id="sidebar">
-  <h2>🧭 Navigation</h2>
-  <a href="#lan" class="nav-link"><span>🎮</span>Événement matinal</a>
-  <a href="#pm" class="nav-link"><span>🍹</span>Événement après‑midi</a>
-  <a href="#tech-lan" class="nav-link"><span>🛠️</span>Technique LAN</a>
-  <a href="#tech-pk" class="nav-link"><span>🎵</span>Technique Parking</a>
-  <a href="#tech-gen" class="nav-link"><span>🌐</span>Technique générale</a>
-  <hr style="border-color:#111827;">
-  <button class="btn-ghost" onclick="toggleCompact()">🚀 Mode Jour J</button>
-  <button class="btn-ghost" onclick="cycleTheme()">🎨 Thème</button>
-</nav>
+    <h1>Checklist Event</h1>
 
-<main class="main">
-  <header>
-    <h1>🎉 Checklist – Événement Drink & Jeux</h1>
-    <div class="controls">
-      <button class="btn-primary" onclick="window.print()">📄 PDF</button>
-      <button class="btn-secondary" onclick="resetChecklist()">♻️ Réinitialiser</button>
-      <button class="btn-ghost" onclick="toggleDarkMode()">🌙 Mode sombre</button>
-    </div>
-  </header>
-
-  <!-- 1) Événement matinal – LAN -->
-  <section class="section" id="lan">
-    <h2>🎮 1) Événement matinal – LAN</h2>
-
-    <div class="two-columns">
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>🧩 A. Matériel</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="lan-switch">
-              <label for="lan-switch">Nombre de Nintendo Switch disponibles</label>
-              <input type="text" id="lan-switch-text" class="text-field" placeholder="Ex: 3 consoles">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-jeux">
-              <label for="lan-jeux">Jeux disponibles (Mario Kart, Smash, etc.)</label>
-              <input type="text" id="lan-jeux-text" class="text-field" placeholder="Liste des jeux">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-projecteurs">
-              <label for="lan-projecteurs">Projecteurs à emprunter</label>
-              <input type="text" id="lan-projecteurs-text" class="text-field" placeholder="Ex: 2 projecteurs">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-manettes">
-              <label for="lan-manettes">Manettes disponibles (2 par Switch minimum)</label>
-              <input type="text" id="lan-manettes-text" class="text-field" placeholder="Ex: 6 manettes">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-multiprises">
-              <label for="lan-multiprises">Multiprises & rallonges</label>
-              <input type="text" id="lan-multiprises-text" class="text-field" placeholder="Quantité / emplacement">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-ecrans">
-              <label for="lan-ecrans">Écrans / murs de projection disponibles</label>
-              <input type="text" id="lan-ecrans-text" class="text-field" placeholder="Salle / emplacement">
-            </div>
-          </div>
+    <!-- SECTION 1 -->
+    <div class="accordion-header">Section 1</div>
+    <div class="accordion-content">
+        <div>
+            <input type="checkbox" id="cb1">
+            <label for="cb1">Tâche 1</label><br>
+            <input type="text" id="txt1" placeholder="Note…"><br>
         </div>
-      </div>
 
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>📦 B. Logistique</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="lan-local">
-              <label for="lan-local">Local attribué pour la LAN</label>
-              <input type="text" id="lan-local-text" class="text-field" placeholder="Nom / numéro du local">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-installation">
-              <label for="lan-installation">Organisation de l’installation (qui fait quoi)</label>
-              <input type="text" id="lan-installation-text" class="text-field" placeholder="Responsables installation">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-rangement">
-              <label for="lan-rangement">Organisation du rangement</label>
-              <input type="text" id="lan-rangement-text" class="text-field" placeholder="Responsables rangement">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-cables">
-              <label for="lan-cables">Sécurisation des câbles au sol (ruban adhésif)</label>
-              <input type="text" id="lan-cables-text" class="text-field" placeholder="Zones à sécuriser">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-ventilation">
-              <label for="lan-ventilation">Ventilation du local (projecteurs qui chauffent)</label>
-              <input type="text" id="lan-ventilation-text" class="text-field" placeholder="Fenêtres / portes / ventilateurs">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="lan-tournoi">
-              <label for="lan-tournoi">Format : tournoi ou free‑play</label>
-              <input type="text" id="lan-tournoi-text" class="text-field" placeholder="Ex: tournoi Mario Kart">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 2) Événement après-midi – Parking / Drink -->
-  <section class="section" id="pm">
-    <h2>🍹 2) Événement après‑midi – Parking / Drink</h2>
-
-    <div class="two-columns">
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>🧩 A. Matériel</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="pm-bar">
-              <label for="pm-bar">Matériel pour le bar (table, nappes, gobelets, serviettes)</label>
-              <input type="text" id="pm-bar-text" class="text-field" placeholder="Détails du bar">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-frigo">
-              <label for="pm-frigo">Frigo / glacière disponible</label>
-              <input type="text" id="pm-frigo-text" class="text-field" placeholder="Qui apporte ?">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-boissons">
-              <label for="pm-boissons">Boissons prévues (softs ou alcool)</label>
-              <input type="text" id="pm-boissons-text" class="text-field" placeholder="Liste des boissons">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-enceintes">
-              <label for="pm-enceintes">Enceintes (Bluetooth ou système plus puissant)</label>
-              <input type="text" id="pm-enceintes-text" class="text-field" placeholder="Qui prête ?">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-lumieres">
-              <label for="pm-lumieres">Lumières (LED, spots, guirlandes)</label>
-              <input type="text" id="pm-lumieres-text" class="text-field" placeholder="Type de lumières">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-tente">
-              <label for="pm-tente">Tente / abri (si disponible)</label>
-              <input type="text" id="pm-tente-text" class="text-field" placeholder="Disponibilité / taille">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-electricite">
-              <label for="pm-electricite">Accès à l’électricité extérieure</label>
-              <input type="text" id="pm-electricite-text" class="text-field" placeholder="Emplacement de la prise">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-rallonges">
-              <label for="pm-rallonges">Rallonges longues & multiprises</label>
-              <input type="text" id="pm-rallonges-text" class="text-field" placeholder="Quantité / longueur">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>📦 B. Logistique</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="pm-horaires">
-              <label for="pm-horaires">Horaires de l’événement (début / fin)</label>
-              <input type="text" id="pm-horaires-text" class="text-field" placeholder="Ex: 14h → 18h">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-musique">
-              <label for="pm-musique">Gestion de la musique (playlist ou DJ)</label>
-              <input type="text" id="pm-musique-text" class="text-field" placeholder="Responsable musique">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-securite">
-              <label for="pm-securite">Sécurité humaine (bénévoles, surveillance)</label>
-              <input type="text" id="pm-securite-text" class="text-field" placeholder="Noms / rôles">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-delimitation">
-              <label for="pm-delimitation">Délimitation de la zone (rubalise, barrières)</label>
-              <input type="text" id="pm-delimitation-text" class="text-field" placeholder="Matériel nécessaire">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-meteo">
-              <label for="pm-meteo">Plan B en cas de pluie</label>
-              <input type="text" id="pm-meteo-text" class="text-field" placeholder="Solution alternative">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-poubelles">
-              <label for="pm-poubelles">Gestion des déchets (poubelles, sacs)</label>
-              <input type="text" id="pm-poubelles-text" class="text-field" placeholder="Emplacements / quantité">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="pm-rangement">
-              <label for="pm-rangement">Organisation du rangement après l’événement</label>
-              <input type="text" id="pm-rangement-text" class="text-field" placeholder="Responsables rangement">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3) Aspects techniques -->
-  <section class="section" id="tech-lan">
-    <h2>🛠️ 3) Aspects techniques – LAN</h2>
-
-    <div class="two-columns">
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>🧩 A. Matériel</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="tech-lan-alim">
-              <label for="tech-lan-alim">Alimentation électrique (prises disponibles)</label>
-              <input type="text" id="tech-lan-alim-text" class="text-field" placeholder="Emplacements / quantité">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-lan-cables">
-              <label for="tech-lan-cables">Câblage HDMI / USB‑C / adaptateurs</label>
-              <input type="text" id="tech-lan-cables-text" class="text-field" placeholder="Liste des câbles nécessaires">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-lan-ecrans">
-              <label for="tech-lan-ecrans">Écrans / projecteurs</label>
-              <input type="text" id="tech-lan-ecrans-text" class="text-field" placeholder="Quantité / emplacement">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>📦 B. Logistique</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="tech-lan-install">
-              <label for="tech-lan-install">Installation du matériel (ordre, câblage, sécurité)</label>
-              <input type="text" id="tech-lan-install-text" class="text-field" placeholder="Responsables / étapes">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-lan-rangement">
-              <label for="tech-lan-rangement">Rangement et inventaire du matériel</label>
-              <input type="text" id="tech-lan-rangement-text" class="text-field" placeholder="Qui range quoi ?">
-            </div>
-          </div>
-        </div>
-      </div>
+        <button class="addTaskBtn">+ Ajouter une tâche</button>
     </div>
 
-    <div class="accordion">
-      <div class="accordion-header" onclick="toggleAccordion(this)">
-        <span>⚠️ C. Éléments souvent oubliés</span>
-        <span class="chevron">▶</span>
-      </div>
-      <div class="accordion-content">
-        <div class="item">
-          <input type="checkbox" id="tech-lan-adhesif">
-          <label for="tech-lan-adhesif">Ruban adhésif pour sécuriser les câbles</label>
-          <input type="text" id="tech-lan-adhesif-text" class="text-field" placeholder="Zones à sécuriser">
+    <!-- SECTION 2 -->
+    <div class="accordion-header">Section 2</div>
+    <div class="accordion-content">
+        <div>
+            <input type="checkbox" id="cb2">
+            <label for="cb2">Tâche 2</label><br>
+            <input type="text" id="txt2" placeholder="Note…"><br>
         </div>
-        <div class="item">
-          <input type="checkbox" id="tech-lan-chiffons">
-          <label for="tech-lan-chiffons">Chiffons pour nettoyer les tables</label>
-          <input type="text" id="tech-lan-chiffons-text" class="text-field" placeholder="Quantité">
-        </div>
-        <div class="item">
-          <input type="checkbox" id="tech-lan-power">
-          <label for="tech-lan-power">Powerbanks / chargeurs</label>
-          <input type="text" id="tech-lan-power-text" class="text-field" placeholder="Besoin estimé">
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="section" id="tech-pk">
-    <h2>🎵 3) Aspects techniques – Parking</h2>
-
-    <div class="two-columns">
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>🧩 A. Matériel</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="tech-pk-son">
-              <label for="tech-pk-son">Système son (enceintes, câbles, alimentation)</label>
-              <input type="text" id="tech-pk-son-text" class="text-field" placeholder="Type / puissance">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-pk-lumieres">
-              <label for="tech-pk-lumieres">Lumières (LED, spots, guirlandes)</label>
-              <input type="text" id="tech-pk-lumieres-text" class="text-field" placeholder="Liste du matériel">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-pk-electricite">
-              <label for="tech-pk-electricite">Accès à l’électricité extérieure</label>
-              <input type="text" id="tech-pk-electricite-text" class="text-field" placeholder="Emplacement de la prise">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>📦 B. Logistique</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="tech-pk-install">
-              <label for="tech-pk-install">Installation du matériel (son, lumière, bar)</label>
-              <input type="text" id="tech-pk-install-text" class="text-field" placeholder="Responsables / étapes">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-pk-securite">
-              <label for="tech-pk-securite">Sécurité (circulation, zones interdites)</label>
-              <input type="text" id="tech-pk-securite-text" class="text-field" placeholder="Détails sécurité">
-            </div>
-          </div>
-        </div>
-      </div>
+        <button class="addTaskBtn">+ Ajouter une tâche</button>
     </div>
 
-    <div class="accordion">
-      <div class="accordion-header" onclick="toggleAccordion(this)">
-        <span>⚠️ C. Éléments souvent oubliés</span>
-        <span class="chevron">▶</span>
-      </div>
-      <div class="accordion-content">
-        <div class="item">
-          <input type="checkbox" id="tech-pk-led">
-          <label for="tech-pk-led">Lampes LED portables</label>
-          <input type="text" id="tech-pk-led-text" class="text-field" placeholder="Quantité / emplacement">
-        </div>
-        <div class="item">
-          <input type="checkbox" id="tech-pk-rubalise">
-          <label for="tech-pk-rubalise">Rubalise pour délimiter les zones</label>
-          <input type="text" id="tech-pk-rubalise-text" class="text-field" placeholder="Zones à baliser">
-        </div>
-        <div class="item">
-          <input type="checkbox" id="tech-pk-sacs">
-          <label for="tech-pk-sacs">Sacs poubelles</label>
-          <input type="text" id="tech-pk-sacs-text" class="text-field" placeholder="Quantité">
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- BLOC SYNCHRONISATION -->
+    <div style="padding: 10px; border-top: 1px solid #444; margin-top: 20px;">
+        <h3>Synchronisation</h3>
 
-  <section class="section" id="tech-gen">
-    <h2>🌐 3) Aspects techniques – Général</h2>
+        <label for="githubToken">Token GitHub :</label>
+        <input type="password" id="githubToken" placeholder="Collez votre token ici" style="width:100%; margin-bottom:10px;">
 
-    <div class="two-columns">
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>🧩 A. Matériel</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="tech-gen-extincteur">
-              <label for="tech-gen-extincteur">Extincteur disponible</label>
-              <input type="text" id="tech-gen-extincteur-text" class="text-field" placeholder="Emplacement">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-gen-multiprises">
-              <label for="tech-gen-multiprises">Multiprises supplémentaires</label>
-              <input type="text" id="tech-gen-multiprises-text" class="text-field" placeholder="Quantité">
-            </div>
-          </div>
-        </div>
-      </div>
+        <button id="saveTokenBtn">Enregistrer le token</button>
+        <button id="syncNowBtn">Synchroniser maintenant</button>
 
-      <div>
-        <div class="accordion">
-          <div class="accordion-header" onclick="toggleAccordion(this)">
-            <span>📦 B. Logistique</span>
-            <span class="chevron">▶</span>
-          </div>
-          <div class="accordion-content">
-            <div class="item">
-              <input type="checkbox" id="tech-gen-install">
-              <label for="tech-gen-install">Planning d’installation</label>
-              <input type="text" id="tech-gen-install-text" class="text-field" placeholder="Heures / responsables">
-            </div>
-            <div class="item">
-              <input type="checkbox" id="tech-gen-transport">
-              <label for="tech-gen-transport">Transport du matériel</label>
-              <input type="text" id="tech-gen-transport-text" class="text-field" placeholder="Qui transporte quoi ?">
-            </div>
-          </div>
-        </div>
-      </div>
+        <p id="syncStatus" style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;"></p>
     </div>
 
-    <div class="accordion">
-      <div class="accordion-header" onclick="toggleAccordion(this)">
-        <span>⚠️ C. Éléments souvent oubliés</span>
-        <span class="chevron">▶</span>
-      </div>
-      <div class="accordion-content">
-        <div class="item">
-          <input type="checkbox" id="tech-gen-chargeurs">
-          <label for="tech-gen-chargeurs">Chargeurs divers</label>
-          <input type="text" id="tech-gen-chargeurs-text" class="text-field" placeholder="Type / quantité">
-        </div>
-        <div class="item">
-          <input type="checkbox" id="tech-gen-eau">
-          <label for="tech-gen-eau">Eau pour les bénévoles</label>
-          <input type="text" id="tech-gen-eau-text" class="text-field" placeholder="Quantité / emplacement">
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+    <!-- SCRIPT GLOBAL -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+        /* ---------------------------------------------------
+           SAUVEGARDE LOCALE
+        --------------------------------------------------- */
+
+        const STORAGE_CHECKBOX = "event_checklist_checkbox_state_v2";
+        const STORAGE_TEXT = "event_checklist_text_state_v2";
+
+        function saveCheckboxes() {
+            const boxes = document.querySelectorAll("input[type='checkbox'][id]");
+            const state = {};
+            boxes.forEach(b => state[b.id] = b.checked);
+            localStorage.setItem(STORAGE_CHECKBOX, JSON.stringify(state));
+        }
+
+        function loadCheckboxes() {
+            const raw = localStorage.getItem(STORAGE_CHECKBOX);
+            if (!raw) return;
+            const state = JSON.parse(raw);
+            Object.entries(state).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el) el.checked = val;
+            });
+        }
+
+        function saveTextFields() {
+            const fields = document.querySelectorAll("input[type='text'][id]");
+            const state = {};
+            fields.forEach(f => state[f.id] = f.value);
+            localStorage.setItem(STORAGE_TEXT, JSON.stringify(state));
+        }
+
+        function loadTextFields() {
+            const raw = localStorage.getItem(STORAGE_TEXT);
+            if (!raw) return;
+            const state = JSON.parse(raw);
+            Object.entries(state).forEach(([id, val]) => {
+                const el = document.getElementById(id);
+                if (el) el.value = val;
+            });
+        }
+
+        document.body.addEventListener("change", e => {
+            if (e.target.matches("input[type='checkbox']")) saveCheckboxes();
+        });
+
+        document.body.addEventListener("input", e => {
+            if (e.target.matches("input[type='text']")) saveTextFields();
+        });
+
+        loadCheckboxes();
+        loadTextFields();
 
 
+        /* ---------------------------------------------------
+           ACCORDÉONS
+        --------------------------------------------------- */
 
-<div style="padding: 10px; border-top: 1px solid #444; margin-top: 20px;">
-    <h3>Synchronisation</h3>
+        function toggleAccordion(header) {
+            header.classList.toggle("open");
+            const content = header.nextElementSibling;
+            if (!content) return;
+            content.classList.toggle("open");
+        }
 
-    <label for="githubToken">Token GitHub :</label>
-    <input type="password" id="githubToken" placeholder="Collez votre token ici" style="width:100%; margin-bottom:10px;">
+        document.querySelectorAll(".accordion-header").forEach((h, i) => {
+            h.addEventListener("click", () => toggleAccordion(h));
+            if (i < 2) toggleAccordion(h);
+        });
 
-    <button id="saveTokenBtn">Enregistrer le token</button>
-    <button id="syncNowBtn">Synchroniser maintenant</button>
 
-    <p id="syncStatus" style="font-size: 0.9em; opacity: 0.7; margin-top: 10px;"></p>
-</div>
+        /* ---------------------------------------------------
+           SYNCHRONISATION GITHUB
+        --------------------------------------------------- */
 
-<script>
-const STORAGE_CHECKBOX = "event_checklist_checkbox_state_v2";
-const STORAGE_TEXT = "event_checklist_text_state_v2";
-const STORAGE_DARK = "event_checklist_darkmode_v2";
-const STORAGE_THEME = "event_checklist_theme_v2";
-const STORAGE_COMPACT = "event_checklist_compact_v2";
+        const repoOwner = "byNatey";
+        const repoName = "checklist-event";
+        const dataFilePath = "data.json";
 
-function saveCheckboxes() {
-  const boxes = document.querySelectorAll("input[type='checkbox'][id]");
-  const state = {};
-  boxes.forEach(b => state[b.id] = b.checked);
-  localStorage.setItem(STORAGE_CHECKBOX, JSON.stringify(state));
-}
-function loadCheckboxes() {
-  const raw = localStorage.getItem(STORAGE_CHECKBOX);
-  if (!raw) return;
-  const state = JSON.parse(raw);
-  Object.entries(state).forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if (el) el.checked = val;
-  });
-}
+        function getToken() {
+            return localStorage.getItem("githubToken") || "";
+        }
 
-function saveTextFields() {
-  const fields = document.querySelectorAll("input[type='text'][id]");
-  const state = {};
-  fields.forEach(f => state[f.id] = f.value);
-  localStorage.setItem(STORAGE_TEXT, JSON.stringify(state));
-}
-function loadTextFields() {
-  const raw = localStorage.getItem(STORAGE_TEXT);
-  if (!raw) return;
-  const state = JSON.parse(raw);
-  Object.entries(state).forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
-  });
-}
+        document.getElementById("saveTokenBtn").onclick = () => {
+            const token = document.getElementById("githubToken").value.trim();
+            if (token.length < 10) {
+                alert("Token invalide");
+                return;
+            }
+            localStorage.setItem("githubToken", token);
+            alert("Token enregistré localement !");
+        };
 
-function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode-extra");
-  localStorage.setItem(STORAGE_DARK, document.body.classList.contains("dark-mode-extra"));
-}
-function loadDarkMode() {
-  const raw = localStorage.getItem(STORAGE_DARK);
-  if (raw === "true") {
-    document.body.classList.add("dark-mode-extra");
-  }
-}
+        async function loadDataFromGitHub() {
+            const token = getToken();
+            if (!token) return;
 
-const THEMES = ["theme-comite", "theme-neutre", "theme-punchy", "theme-classique"];
-function cycleTheme() {
-  let current = THEMES.find(t => document.body.classList.contains(t)) || THEMES[0];
-  let idx = THEMES.indexOf(current);
-  document.body.classList.remove(...THEMES);
-  let next = THEMES[(idx + 1) % THEMES.length];
-  document.body.classList.add(next);
-  localStorage.setItem(STORAGE_THEME, next);
-}
-function loadTheme() {
-  const raw = localStorage.getItem(STORAGE_THEME);
-  if (raw && THEMES.includes(raw)) {
-    document.body.classList.remove(...THEMES);
-    document.body.classList.add(raw);
-  }
-}
+            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
 
-function toggleCompact() {
-  document.body.classList.toggle("compact");
-  localStorage.setItem(STORAGE_COMPACT, document.body.classList.contains("compact"));
-}
-function loadCompact() {
-  const raw = localStorage.getItem(STORAGE_COMPACT);
-  if (raw === "true") {
-    document.body.classList.add("compact");
-  }
-}
+            const response = await fetch(url, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
-function resetChecklist() {
-  if (!confirm("Réinitialiser toutes les cases et champs texte ?")) return;
-  document.querySelectorAll("input[type='checkbox']").forEach(cb => cb.checked = false);
-  document.querySelectorAll("input[type='text']").forEach(tf => tf.value = "");
-  localStorage.removeItem(STORAGE_CHECKBOX);
-  localStorage.removeItem(STORAGE_TEXT);
-}
+            if (!response.ok) {
+                console.error("Erreur lecture GitHub", await response.text());
+                return;
+            }
 
-function toggleAccordion(header) {
-  header.classList.toggle("open");
-  const content = header.nextElementSibling;
-  if (!content) return;
-  content.classList.toggle("open");
-}
+            const file = await response.json();
+            const content = JSON.parse(atob(file.content));
 
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("open");
-}
+            // Checkboxes
+            if (content.checkboxes) {
+                for (const id in content.checkboxes) {
+                    const checkbox = document.getElementById(id);
+                    if (checkbox) checkbox.checked = content.checkboxes[id];
+                }
+            }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadCheckboxes();
-  loadTextFields();
-  loadDarkMode();
-  loadTheme();
-  loadCompact();
+            // Champs texte
+            if (content.textfields) {
+                for (const id in content.textfields) {
+                    const field = document.getElementById(id);
+                    if (field) field.value = content.textfields[id];
+                }
+            }
 
-  document.body.addEventListener("change", e => {
-    if (e.target.matches("input[type='checkbox']")) saveCheckboxes();
-  });
-  document.body.addEventListener("input", e => {
-    if (e.target.matches("input[type='text']")) saveTextFields();
-  });
+            document.getElementById("syncStatus").innerText = "Synchronisé depuis GitHub ✔";
+        }
 
-  // Ouvrir par défaut les premiers accordéons
-  document.querySelectorAll(".accordion-header").forEach((h, i) => {
-    if (i < 3) toggleAccordion(h);
-  });
-});
-  // -----------------------------
-// CONFIG
-// -----------------------------
-const repoOwner = "byNatey";
-const repoName = "checklist-event";
-const dataFilePath = "data.json";
+        async function saveDataToGitHub() {
+            const token = getToken();
+            if (!token) return;
 
-// -----------------------------
-// TOKEN LOCAL
-// -----------------------------
-function getToken() {
-    return localStorage.getItem("githubToken") || "";
-}
+            const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
 
-document.getElementById("saveTokenBtn").onclick = () => {
-    const token = document.getElementById("githubToken").value.trim();
-    if (token.length < 10) {
-        alert("Token invalide");
-        return;
-    }
-    localStorage.setItem("githubToken", token);
-    alert("Token enregistré localement !");
-};
+            const getResp = await fetch(url, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
 
-// -----------------------------
-// LECTURE DU FICHIER data.json
-// -----------------------------
-async function loadDataFromGitHub() {
-    const token = getToken();
-    if (!token) return;
+            const file = await getResp.json();
 
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
+            // Checkboxes
+            const checkboxes = {};
+            document.querySelectorAll("input[type=checkbox][id]").forEach(cb => {
+                checkboxes[cb.id] = cb.checked;
+            });
 
-    const response = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` }
+            // Champs texte
+            const textfields = {};
+            document.querySelectorAll("input[type=text][id]").forEach(tf => {
+                textfields[tf.id] = tf.value;
+            });
+
+            const newContent = {
+                checkboxes,
+                textfields
+            };
+
+            const encoded = btoa(JSON.stringify(newContent, null, 2));
+
+            await fetch(url, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: "Update checklist",
+                    content: encoded,
+                    sha: file.sha
+                })
+            });
+
+            document.getElementById("syncStatus").innerText = "Synchronisé vers GitHub ✔";
+        }
+
+        document.getElementById("syncNowBtn").onclick = () => {
+            loadDataFromGitHub();
+        };
+
+        setInterval(() => {
+            loadDataFromGitHub();
+        }, 15000);
+
+
+        /* ---------------------------------------------------
+           AJOUT DYNAMIQUE DE TÂCHES
+        --------------------------------------------------- */
+
+        function createUniqueId(prefix) {
+            return prefix + "_" + Math.random().toString(36).substring(2, 10);
+        }
+
+        function addNewTask(container) {
+            const idCheckbox = createUniqueId("cb");
+            const idText = createUniqueId("txt");
+
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = `
+                <input type="checkbox" id="${idCheckbox}">
+                <label for="${idCheckbox}">Nouvelle tâche</label><br>
+                <input type="text" id="${idText}" placeholder="Note…"><br>
+            `;
+
+            const btn = container.querySelector(".addTaskBtn");
+            container.insertBefore(wrapper, btn);
+
+            const cb = wrapper.querySelector(`#${idCheckbox}`);
+            const tf = wrapper.querySelector(`#${idText}`);
+
+            cb.addEventListener("change", () => {
+                saveCheckboxes();
+                saveDataToGitHub();
+            });
+
+            tf.addEventListener("input", () => {
+                saveTextFields();
+                saveDataToGitHub();
+            });
+
+            saveCheckboxes();
+            saveTextFields();
+            saveDataToGitHub();
+        }
+
+        document.querySelectorAll(".addTaskBtn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const container = btn.closest(".accordion-content");
+                addNewTask(container);
+            });
+        });
+
+        // Synchronisation initiale
+        loadDataFromGitHub();
+
     });
+    </script>
 
-    if (!response.ok) {
-        console.error("Erreur lecture GitHub", await response.text());
-        return;
-    }
-
-    const file = await response.json();
-    const content = JSON.parse(atob(file.content));
-
-    // Mise à jour des cases
-    for (const id in content.checkboxes) {
-        const checkbox = document.getElementById(id);
-        if (checkbox) checkbox.checked = content.checkboxes[id];
-    }
-
-    document.getElementById("syncStatus").innerText = "Synchronisé depuis GitHub ✔";
-}
-
-// -----------------------------
-// ÉCRITURE DANS data.json
-// -----------------------------
-async function saveDataToGitHub() {
-    const token = getToken();
-    if (!token) return;
-
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${dataFilePath}`;
-
-    // Lire la version actuelle pour obtenir le SHA
-    const getResp = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
-
-    const file = await getResp.json();
-
-    // Construire les données
-    const checkboxes = {};
-    document.querySelectorAll("input[type=checkbox]").forEach(cb => {
-        checkboxes[cb.id] = cb.checked;
-    });
-
-    const newContent = {
-        checkboxes: checkboxes
-    };
-
-    // Encoder en base64
-    const encoded = btoa(JSON.stringify(newContent, null, 2));
-
-    // Envoyer la mise à jour
-    await fetch(url, {
-        method: "PUT",
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: "Update checklist",
-            content: encoded,
-            sha: file.sha
-        })
-    });
-
-    document.getElementById("syncStatus").innerText = "Synchronisé vers GitHub ✔";
-}
-
-// -----------------------------
-// SYNCHRO MANUELLE
-// -----------------------------
-document.getElementById("syncNowBtn").onclick = () => {
-    loadDataFromGitHub();
-};
-
-// -----------------------------
-// SYNCHRO AUTOMATIQUE (15s)
-// -----------------------------
-setInterval(() => {
-    loadDataFromGitHub();
-}, 15000);
-
-// -----------------------------
-// SAUVEGARDE AUTOMATIQUE LORS DU CLIC
-// -----------------------------
-document.querySelectorAll("input[type=checkbox]").forEach(cb => {
-    cb.addEventListener("change", () => {
-        saveDataToGitHub();
-    });
-});
-
-// Charger les données au démarrage
-loadDataFromGitHub();
-
-</script>  
-  
 </body>
 </html>
