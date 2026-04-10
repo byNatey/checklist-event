@@ -4,353 +4,283 @@
     <meta charset="UTF-8">
     <title>Checklist – Événement Drink & Jeux</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <style>
         /* ====== RESET ====== */
-body, h1, h2, h3, p, div, input, button {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
+        body, h1, h2, h3, p, div, input, button {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-/* ====== GLOBAL ====== */
-body {
-    background: #1e1e1e;
-    color: white;
-    padding: 20px;
-    display: flex;
-    gap: 20px;
-}
+        /* ====== GLOBAL ====== */
+        body {
+            background: #1e1e1e;
+            color: white;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
 
-header {
-    width: 100%;
-    margin-bottom: 20px;
-}
+        header {
+            width: 100%;
+            margin-bottom: 20px;
+        }
 
-h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
 
-.top-buttons {
-    display: flex;
-    gap: 10px;
-}
+        h2 {
+            font-size: 22px;
+            margin: 25px 0 10px 0;
+            font-weight: bold;
+        }
 
-button {
-    background: #333;
-    color: white;
-    border: 1px solid #555;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-}
+        .subsection-title {
+            font-weight: bold;
+            margin: 12px 0 6px 0;
+        }
 
-button:hover {
-    background: #444;
-}
+        .top-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-/* ====== ACCORDÉONS ====== */
-.accordion {
-    background: #2a2a2a;
-    border: 1px solid #444;
-    margin-bottom: 15px;
-    border-radius: 6px;
-}
+        button {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-.accordion-header {
-    padding: 12px;
-    font-size: 20px;
-    background: #333;
-    cursor: pointer;
-    border-radius: 6px 6px 0 0;
-}
+        button:hover {
+            background: #444;
+        }
 
-.accordion-content {
-    padding: 15px;
-    display: block; /* ouvert par défaut */
-}
+        /* ====== LIGNES ====== */
+        .line {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+        }
 
-/* ====== SOUS-SECTIONS ====== */
-.subsection {
-    background: #252525;
-    border: 1px solid #444;
-    margin: 10px 0;
-    border-radius: 6px;
-}
+        .line-title, .line-note {
+            width: 100%;
+            padding: 6px;
+            margin-bottom: 5px;
+            background: #2a2a2a;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 4px;
+        }
 
-.subsection-header {
-    padding: 10px;
-    font-size: 18px;
-    background: #303030;
-    cursor: pointer;
-    border-radius: 6px 6px 0 0;
-}
+        .delete-line {
+            background: #7a1f1f;
+            border: 1px solid #aa2a2a;
+            width: 80px;
+        }
 
-.subsection-content {
-    padding: 10px;
-    display: block; /* ouvert par défaut */
-}
+        .delete-line:hover {
+            background: #992222;
+        }
 
-/* ====== LIGNES ====== */
-.line {
-    display: flex;
-    flex-direction: column;
-    background: #1c1c1c;
-    border: 1px solid #444;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-}
+        .add-line {
+            margin-top: 5px;
+            background: #1f7a39;
+            border: 1px solid #2aaa55;
+            width: 160px;
+        }
 
-.line-title, .line-note {
-    width: 100%;
-    padding: 6px;
-    margin-bottom: 6px;
-    background: #2a2a2a;
-    border: 1px solid #555;
-    color: white;
-    border-radius: 4px;
-}
+        .add-line:hover {
+            background: #22a94a;
+        }
 
-.delete-line {
-    background: #7a1f1f;
-    border: 1px solid #aa2a2a;
-}
+        /* ====== PANNEAU DE SYNCHRO ====== */
+        #syncPanel {
+            width: 260px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 6px;
+            height: fit-content;
+        }
 
-.delete-line:hover {
-    background: #992222;
-}
+        #syncPanel input {
+            width: 100%;
+            padding: 6px;
+            margin: 6px 0;
+            background: #1c1c1c;
+            border: 1px solid #555;
+            color: white;
+            border-radius: 4px;
+        }
 
-/* ====== AJOUT DE LIGNE ====== */
-.add-line {
-    margin-top: 10px;
-    background: #1f7a39;
-    border: 1px solid #2aaa55;
-}
+        #syncStatus {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #8fd18f;
+        }
 
-.add-line:hover {
-    background: #22a94a;
-}
+        /* ====== MODE SOMBRE (toggle) ====== */
+        body.light {
+            background: #f5f5f5;
+            color: black;
+        }
 
-/* ====== PANNEAU DE SYNCHRO ====== */
-#syncPanel {
-    width: 260px;
-    background: #2a2a2a;
-    border: 1px solid #444;
-    padding: 15px;
-    border-radius: 6px;
-    height: fit-content;
-}
+        body.light input {
+            background: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
 
-#syncPanel input {
-    width: 100%;
-    padding: 6px;
-    margin: 6px 0;
-    background: #1c1c1c;
-    border: 1px solid #555;
-    color: white;
-    border-radius: 4px;
-}
+        body.light button {
+            background: #ddd;
+            color: black;
+            border: 1px solid #aaa;
+        }
 
-#syncStatus {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #8fd18f;
-}
-
+        body.light #syncPanel {
+            background: #e0e0e0;
+            border-color: #bbb;
+        }
     </style>
 </head>
 
 <body>
 
-    <header>
+    <main style="flex:1">
+
         <h1>Checklist – Événement Drink & Jeux</h1>
+
         <div class="top-buttons">
             <button id="pdfBtn">PDF</button>
             <button id="resetBtn">Réinitialiser</button>
             <button id="darkModeBtn">Mode sombre</button>
         </div>
-    </header>
-
-    <main>
 
         <!-- ========================= -->
         <!-- SECTION 1 : LAN MATINAL -->
         <!-- ========================= -->
-        <div class="accordion open">
-            <div class="accordion-header">1) Événement matinal – LAN</div>
-            <div class="accordion-content open">
+        <h2>1) Événement matinal – LAN</h2>
 
-                <!-- A. Matériel -->
-                <div class="subsection open">
-                    <div class="subsection-header">A. Matériel</div>
-                    <div class="subsection-content open" id="sec1A">
+        <div class="subsection-title">A. Matériel</div>
+        <div id="sec1A">
 
-                        <!-- Exemple de ligne -->
-                        <div class="line">
-                            <input class="line-title" value="Nombre de Nintendo Switch disponibles">
-                            <input class="line-note" placeholder="Ex : 3 consoles">
-                            <button class="delete-line">🗑</button>
-                        </div>
-
-                        <div class="line">
-                            <input class="line-title" value="Jeux disponibles (Mario Kart, Smash, etc)">
-                            <input class="line-note" placeholder="Liste des jeux">
-                            <button class="delete-line">🗑</button>
-                        </div>
-
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-                <!-- B. Logistique -->
-                <div class="subsection open">
-                    <div class="subsection-header">B. Logistique</div>
-                    <div class="subsection-content open" id="sec1B">
-
-                        <div class="line">
-                            <input class="line-title" value="Local attribué pour la LAN">
-                            <input class="line-note" placeholder="Nom / numéro du local">
-                            <button class="delete-line">🗑</button>
-                        </div>
-
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
+            <div class="line">
+                <input class="line-title" value="Nombre de Nintendo Switch disponibles">
+                <input class="line-note" placeholder="Ex : 3 consoles">
+                <button class="delete-line">🗑</button>
             </div>
+
+            <div class="line">
+                <input class="line-title" value="Jeux disponibles (Mario Kart, Smash, etc)">
+                <input class="line-note" placeholder="Liste des jeux">
+                <button class="delete-line">🗑</button>
+            </div>
+
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
+
+        <div class="subsection-title">B. Logistique</div>
+        <div id="sec1B">
+
+            <div class="line">
+                <input class="line-title" value="Local attribué pour la LAN">
+                <input class="line-note" placeholder="Nom / numéro du local">
+                <button class="delete-line">🗑</button>
+            </div>
+
+            <button class="add-line">+ Ajouter une ligne</button>
         </div>
 
         <!-- ========================= -->
         <!-- SECTION 2 : DRINK & JEUX -->
         <!-- ========================= -->
-        <div class="accordion open">
-            <div class="accordion-header">2) Événement après-midi – Parking / Drink</div>
-            <div class="accordion-content open">
+        <h2>2) Événement après-midi – Parking / Drink</h2>
 
-                <!-- A. Matériel -->
-                <div class="subsection open">
-                    <div class="subsection-header">A. Matériel</div>
-                    <div class="subsection-content open" id="sec2A">
+        <div class="subsection-title">A. Matériel</div>
+        <div id="sec2A">
 
-                        <div class="line">
-                            <input class="line-title" value="Matériel pour le bar (table, nappes, gobelets)">
-                            <input class="line-note" placeholder="Détails du bar">
-                            <button class="delete-line">🗑</button>
-                        </div>
-
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-                <!-- B. Logistique -->
-                <div class="subsection open">
-                    <div class="subsection-header">B. Logistique</div>
-                    <div class="subsection-content open" id="sec2B">
-
-                        <div class="line">
-                            <input class="line-title" value="Organisation du bar">
-                            <input class="line-note" placeholder="Qui fait quoi ?">
-                            <button class="delete-line">🗑</button>
-                        </div>
-
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
+            <div class="line">
+                <input class="line-title" value="Matériel pour le bar (table, nappes, gobelets)">
+                <input class="line-note" placeholder="Détails du bar">
+                <button class="delete-line">🗑</button>
             </div>
+
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
+
+        <div class="subsection-title">B. Logistique</div>
+        <div id="sec2B">
+
+            <div class="line">
+                <input class="line-title" value="Organisation du bar">
+                <input class="line-note" placeholder="Qui fait quoi ?">
+                <button class="delete-line">🗑</button>
+            </div>
+
+            <button class="add-line">+ Ajouter une ligne</button>
         </div>
 
         <!-- ========================= -->
         <!-- SECTION 3 : ASPECTS TECHNIQUES -->
         <!-- ========================= -->
 
-        <!-- LAN -->
-        <div class="accordion open">
-            <div class="accordion-header">3) Aspects techniques – LAN</div>
-            <div class="accordion-content open">
+        <h2>3) Aspects techniques – LAN</h2>
 
-                <div class="subsection open">
-                    <div class="subsection-header">A. Matériel</div>
-                    <div class="subsection-content open" id="sec3LAN_A">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-                <div class="subsection open">
-                    <div class="subsection-header">B. Logistique</div>
-                    <div class="subsection-content open" id="sec3LAN_B">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-                <div class="subsection open">
-                    <div class="subsection-header">C. Éléments souvent oubliés</div>
-                    <div class="subsection-content open" id="sec3LAN_C">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-            </div>
+        <div class="subsection-title">A. Matériel</div>
+        <div id="sec3LAN_A">
+            <button class="add-line">+ Ajouter une ligne</button>
         </div>
 
-        <!-- PARKING -->
-        <div class="accordion open">
-            <div class="accordion-header">3) Aspects techniques – Parking</div>
-            <div class="accordion-content open">
-
-                <div class="subsection open">
-                    <div class="subsection-header">A. Matériel</div>
-                    <div class="subsection-content open" id="sec3PARK_A">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-                <div class="subsection open">
-                    <div class="subsection-header">B. Logistique</div>
-                    <div class="subsection-content open" id="sec3PARK_B">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-                <div class="subsection open">
-                    <div class="subsection-header">C. Éléments souvent oubliés</div>
-                    <div class="subsection-content open" id="sec3PARK_C">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
-
-            </div>
+        <div class="subsection-title">B. Logistique</div>
+        <div id="sec3LAN_B">
+            <button class="add-line">+ Ajouter une ligne</button>
         </div>
 
-        <!-- GENERAL -->
-        <div class="accordion open">
-            <div class="accordion-header">3) Aspects techniques – Général</div>
-            <div class="accordion-content open">
+        <div class="subsection-title">C. Éléments souvent oubliés</div>
+        <div id="sec3LAN_C">
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
 
-                <div class="subsection open">
-                    <div class="subsection-header">A. Matériel</div>
-                    <div class="subsection-content open" id="sec3GEN_A">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
+        <h2>3) Aspects techniques – Parking</h2>
 
-                <div class="subsection open">
-                    <div class="subsection-header">B. Logistique</div>
-                    <div class="subsection-content open" id="sec3GEN_B">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
+        <div class="subsection-title">A. Matériel</div>
+        <div id="sec3PARK_A">
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
 
-                <div class="subsection open">
-                    <div class="subsection-header">C. Éléments souvent oubliés</div>
-                    <div class="subsection-content open" id="sec3GEN_C">
-                        <button class="add-line">+ Ajouter une ligne</button>
-                    </div>
-                </div>
+        <div class="subsection-title">B. Logistique</div>
+        <div id="sec3PARK_B">
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
 
-            </div>
+        <div class="subsection-title">C. Éléments souvent oubliés</div>
+        <div id="sec3PARK_C">
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
+
+        <h2>3) Aspects techniques – Général</h2>
+
+        <div class="subsection-title">A. Matériel</div>
+        <div id="sec3GEN_A">
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
+
+        <div class="subsection-title">B. Logistique</div>
+        <div id="sec3GEN_B">
+            <button class="add-line">+ Ajouter une ligne</button>
+        </div>
+
+        <div class="subsection-title">C. Éléments souvent oubliés</div>
+        <div id="sec3GEN_C">
+            <button class="add-line">+ Ajouter une ligne</button>
         </div>
 
     </main>
@@ -367,146 +297,147 @@ button:hover {
 
     <script>
         /* ============================
-   AJOUT / SUPPRESSION DE LIGNES
-============================ */
+           AJOUT / SUPPRESSION DE LIGNES
+        ============================ */
 
-function createLine() {
-    const div = document.createElement("div");
-    div.className = "line";
+        function createLine() {
+            const div = document.createElement("div");
+            div.className = "line";
 
-    div.innerHTML = `
-        <input class="line-title" placeholder="Titre de la ligne">
-        <input class="line-note" placeholder="Note / détails">
-        <button class="delete-line">🗑</button>
-    `;
+            div.innerHTML = `
+                <input class="line-title" placeholder="Titre de la ligne">
+                <input class="line-note" placeholder="Note / détails">
+                <button class="delete-line">🗑</button>
+            `;
 
-    div.querySelector(".delete-line").addEventListener("click", () => {
-        div.remove();
-        saveToLocal();
-    });
+            div.querySelector(".delete-line").addEventListener("click", () => {
+                div.remove();
+                saveToLocal();
+            });
 
-    return div;
-}
+            return div;
+        }
 
-document.querySelectorAll(".add-line").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const parent = btn.parentElement;
-        parent.insertBefore(createLine(), btn);
-        saveToLocal();
-    });
-});
-
-/* ============================
-   SAUVEGARDE LOCALE
-============================ */
-
-function saveToLocal() {
-    const data = {};
-
-    document.querySelectorAll(".subsection-content").forEach(sec => {
-        const id = sec.id;
-        data[id] = [];
-
-        sec.querySelectorAll(".line").forEach(line => {
-            data[id].push({
-                title: line.querySelector(".line-title").value,
-                note: line.querySelector(".line-note").value
+        document.querySelectorAll(".add-line").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const parent = btn.parentElement;
+                parent.insertBefore(createLine(), btn);
+                saveToLocal();
             });
         });
-    });
 
-    localStorage.setItem("checklistData", JSON.stringify(data));
-}
+        /* ============================
+           SAUVEGARDE LOCALE
+        ============================ */
 
-function loadFromLocal() {
-    const raw = localStorage.getItem("checklistData");
-    if (!raw) return;
+        function saveToLocal() {
+            const data = {};
 
-    const data = JSON.parse(raw);
+            document.querySelectorAll("div[id]").forEach(sec => {
+                const id = sec.id;
+                if (!id.startsWith("sec")) return;
 
-    for (const id in data) {
-        const sec = document.getElementById(id);
-        if (!sec) continue;
+                data[id] = [];
 
-        const addBtn = sec.querySelector(".add-line");
-        sec.querySelectorAll(".line").forEach(l => l.remove());
+                sec.querySelectorAll(".line").forEach(line => {
+                    data[id].push({
+                        title: line.querySelector(".line-title").value,
+                        note: line.querySelector(".line-note").value
+                    });
+                });
+            });
 
-        data[id].forEach(item => {
-            const line = createLine();
-            line.querySelector(".line-title").value = item.title;
-            line.querySelector(".line-note").value = item.note;
-            sec.insertBefore(line, addBtn);
+            localStorage.setItem("checklistData", JSON.stringify(data));
+        }
+
+        function loadFromLocal() {
+            const raw = localStorage.getItem("checklistData");
+            if (!raw) return;
+
+            const data = JSON.parse(raw);
+
+            for (const id in data) {
+                const sec = document.getElementById(id);
+                if (!sec) continue;
+
+                const addBtn = sec.querySelector(".add-line");
+                sec.querySelectorAll(".line").forEach(l => l.remove());
+
+                data[id].forEach(item => {
+                    const line = createLine();
+                    line.querySelector(".line-title").value = item.title;
+                    line.querySelector(".line-note").value = item.note;
+                    sec.insertBefore(line, addBtn);
+                });
+            }
+        }
+
+        loadFromLocal();
+
+        /* ============================
+           SYNCHRONISATION GITHUB
+        ============================ */
+
+        async function syncToGitHub() {
+            const token = localStorage.getItem("githubToken");
+            if (!token) {
+                alert("Aucun token GitHub enregistré.");
+                return;
+            }
+
+            const data = localStorage.getItem("checklistData");
+
+            const repo = "bynatey/checklist-event";
+            const path = "data.json";
+
+            const getFile = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                headers: { Authorization: `token ${token}` }
+            });
+
+            const fileInfo = await getFile.json();
+
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `token ${token}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    message: "Mise à jour checklist",
+                    content: btoa(unescape(encodeURIComponent(data))),
+                    sha: fileInfo.sha
+                })
+            });
+
+            document.getElementById("syncStatus").textContent = "Synchronisation réussie !";
+        }
+
+        document.getElementById("syncNowBtn").addEventListener("click", syncToGitHub);
+
+        document.getElementById("saveTokenBtn").addEventListener("click", () => {
+            const token = document.getElementById("githubToken").value;
+            localStorage.setItem("githubToken", token);
+            alert("Token enregistré !");
         });
-    }
-}
 
-loadFromLocal();
+        /* ============================
+           MODE SOMBRE
+        ============================ */
 
-/* ============================
-   SYNCHRONISATION GITHUB
-============================ */
+        document.getElementById("darkModeBtn").addEventListener("click", () => {
+            document.body.classList.toggle("light");
+        });
 
-async function syncToGitHub() {
-    const token = localStorage.getItem("githubToken");
-    if (!token) {
-        alert("Aucun token GitHub enregistré.");
-        return;
-    }
+        /* ============================
+           RESET
+        ============================ */
 
-    const data = localStorage.getItem("checklistData");
-
-    const repo = "bynatey/checklist-event";
-    const path = "data.json";
-
-    const getFile = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-        headers: { Authorization: `token ${token}` }
-    });
-
-    const fileInfo = await getFile.json();
-
-    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-        method: "PUT",
-        headers: {
-            Authorization: `token ${token}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            message: "Mise à jour checklist",
-            content: btoa(unescape(encodeURIComponent(data))),
-            sha: fileInfo.sha
-        })
-    });
-
-    document.getElementById("syncStatus").textContent = "Synchronisation réussie !";
-}
-
-document.getElementById("syncNowBtn").addEventListener("click", syncToGitHub);
-
-document.getElementById("saveTokenBtn").addEventListener("click", () => {
-    const token = document.getElementById("githubToken").value;
-    localStorage.setItem("githubToken", token);
-    alert("Token enregistré !");
-});
-
-/* ============================
-   MODE SOMBRE
-============================ */
-
-document.getElementById("darkModeBtn").addEventListener("click", () => {
-    document.body.classList.toggle("light");
-});
-
-/* ============================
-   RESET
-============================ */
-
-document.getElementById("resetBtn").addEventListener("click", () => {
-    if (confirm("Réinitialiser toute la checklist ?")) {
-        localStorage.removeItem("checklistData");
-        location.reload();
-    }
-});
-
+        document.getElementById("resetBtn").addEventListener("click", () => {
+            if (confirm("Réinitialiser toute la checklist ?")) {
+                localStorage.removeItem("checklistData");
+                location.reload();
+            }
+        });
     </script>
 
 </body>
