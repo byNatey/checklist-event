@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Checklist – Événement Drink & Jeux</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="main-header">
+    <div class="header-left">
+        <img src="logo.png" alt="Logo CISC" class="logo">
+        <h1>Checklist – Événement Drink & Jeux</h1>
+    </div>
+
+    <div class="header-right">
+        <button id="pdfBtn">PDF</button>
+        <button id="resetBtn">Réinitialiser</button>
+        <button id="darkModeBtn">Mode sombre</button>
+    </div>
+</header>
+
+<div class="page-layout">
+
+    <!-- COLONNE GAUCHE -->
+    <div class="column">
+
+        <!-- SECTION 1 -->
+        <section class="block">
+            <h2>1) Événement matinal – LAN</h2>
+
+            <h3>A. Matériel</h3>
+            <div class="subsection" id="sec1A"></div>
+            <button class="add-line" data-target="sec1A">+ Ajouter une ligne</button>
+
+            <h3>B. Logistique</h3>
+            <div class="subsection" id="sec1B"></div>
+            <button class="add-line" data-target="sec1B">+ Ajouter une ligne</button>
+        </section>
+
+        <!-- SECTION 2 -->
+        <section class="block">
+            <h2>2) Événement après-midi – Parking / Drink</h2>
+
+            <h3>A. Matériel</h3>
+            <div class="subsection" id="sec2A"></div>
+            <button class="add-line" data-target="sec2A">+ Ajouter une ligne</button>
+
+            <h3>B. Logistique</h3>
+            <div class="subsection" id="sec2B"></div>
+            <button class="add-line" data-target="sec2B">+ Ajouter une ligne</button>
+        </section>
+
+    </div>
+
+    <!-- COLONNE DROITE -->
+    <div class="column">
+
+        <!-- TECHNIQUE LAN -->
+        <section class="block">
+            <h2>3) Aspects techniques – LAN</h2>
+
+            <h3>A. Matériel</h3>
+            <div class="subsection" id="sec3LAN_A"></div>
+            <button class="add-line" data-target="sec3LAN_A">+ Ajouter une ligne</button>
+
+            <h3>B. Logistique</h3>
+            <div class="subsection" id="sec3LAN_B"></div>
+            <button class="add-line" data-target="sec3LAN_B">+ Ajouter une ligne</button>
+
+            <h3>C. Éléments souvent oubliés</h3>
+            <div class="subsection" id="sec3LAN_C"></div>
+            <button class="add-line" data-target="sec3LAN_C">+ Ajouter une ligne</button>
+        </section>
+
+        <!-- TECHNIQUE PARKING -->
+        <section class="block">
+            <h2>3) Aspects techniques – Parking</h2>
+
+            <h3>A. Matériel</h3>
+            <div class="subsection" id="sec3PARK_A"></div>
+            <button class="add-line" data-target="sec3PARK_A">+ Ajouter une ligne</button>
+
+            <h3>B. Logistique</h3>
+            <div class="subsection" id="sec3PARK_B"></div>
+            <button class="add-line" data-target="sec3PARK_B">+ Ajouter une ligne</button>
+
+            <h3>C. Éléments souvent oubliés</h3>
+            <div class="subsection" id="sec3PARK_C"></div>
+            <button class="add-line" data-target="sec3PARK_C">+ Ajouter une ligne</button>
+        </section>
+
+        <!-- TECHNIQUE GENERAL -->
+        <section class="block">
+            <h2>3) Aspects techniques – Général</h2>
+
+            <h3>A. Matériel</h3>
+            <div class="subsection" id="sec3GEN_A"></div>
+            <button class="add-line" data-target="sec3GEN_A">+ Ajouter une ligne</button>
+
+            <h3>B. Logistique</h3>
+            <div class="subsection" id="sec3GEN_B"></div>
+            <button class="add-line" data-target="sec3GEN_B">+ Ajouter une ligne</button>
+
+            <h3>C. Éléments souvent oubliés</h3>
+            <div class="subsection" id="sec3GEN_C"></div>
+            <button class="add-line" data-target="sec3GEN_C">+ Ajouter une ligne</button>
+        </section>
+
+    </div>
+
+    <!-- PANNEAU GITHUB -->
+    <aside class="sync-panel">
+        <h3>Synchronisation</h3>
+        <label>Token GitHub :</label>
+        <input type="password" id="githubToken">
+        <button id="saveTokenBtn">Enregistrer le token</button>
+        <button id="syncNowBtn">Synchroniser maintenant</button>
+        <p id="syncStatus"></p>
+    </aside>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
